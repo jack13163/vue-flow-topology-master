@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Process from '../views/Process.vue'
-import RelationGraph from '../components/relation-graph/index.vue'
+import RelationGraph from '../components/relation-graph/demo/Demo4Graph.vue'
 
 Vue.use(VueRouter)
 
