@@ -6,6 +6,8 @@ import store from './store'
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import "./style/init.scss"
+import ElementUI from 'element-ui';
+Vue.use(ElementUI);
 
 import JsonViewer from 'vue-json-viewer'
 Vue.use(JsonViewer);

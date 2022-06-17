@@ -7,8 +7,6 @@
 <script>
 
 import Vue from 'vue';
-// import ElementUI from 'element-ui';
-// Vue.use(ElementUI);
 import { Progress } from 'element-ui';
 Vue.use(Progress);
 
