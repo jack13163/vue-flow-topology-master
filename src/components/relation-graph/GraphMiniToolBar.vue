@@ -151,6 +151,7 @@ export default {
         if (!this.graphSetting.layouter.autoLayout) {
           console.log('当前布局不支持自动布局！')
         } else {
+          console.log('自动布局功能入口...')
           this.graphSetting.layouter.autoLayout(true)
         }
       } else {
