@@ -108,7 +108,6 @@ export default {
     this.$store.commit("setJspInit", jsp.jsPlumb.getInstance({ Container: "zll-index" }));
   },
   mounted() {
-    this.resetViewSize()
     this.init()
   },
   methods: {
@@ -143,32 +142,31 @@ export default {
     },
     // 自动布局相关逻辑
     init() {
-      this.graphData = this.$store.state.flowData;
-      console.log('graphData:', this.graphData)
-      this.viewSizeIsInited = true
-      if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
-        var _defaultLayoutSetting = this.graphSetting.layouts[0]
-        this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
-      } else {
-        console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
-      }
-      this.loadGraphJsonData(this.graphData)
-      this.graphData.rootNode = this.graphData.nodes[0]
-      this.applyNewDataToCanvas()
-      if (this.graphSetting.layouter && this.graphData.rootNode) {
-        console.log('需要布局的节点数量：', this.graphData.nodes.length)
-        this.graphSetting.layouter.placeNodes(this.graphData.nodes, this.graphData.rootNode, this.graphSetting)
-      }
-    },
-    resetViewSize() {
       this.$nextTick(() => {
-        this.graphSetting.viewSize.width = this.$refs.flowContent.$el.clientWidth
-        this.graphSetting.viewSize.height = this.$refs.flowContent.$el.clientHeight
+        this.graphSetting.viewSize.width = this.$refs.flowContent.$el.getBoundingClientRect().width * 10
+        this.graphSetting.viewSize.height = this.$refs.flowContent.$el.getBoundingClientRect().height * 10
         this.graphSetting.canvasZoom = 100
+        this.graphData = this.$store.state.flowData;
+        console.log('graphData:', this.graphData)
+        this.viewSizeIsInited = true
+        if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
+          var _defaultLayoutSetting = this.graphSetting.layouts[0]
+          this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
+        } else {
+          console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
+        }
+        this.loadGraphJsonData(this.graphData)
+        this.graphData.rootNode = this.graphData.nodes[0]
+        Object.assign(this.graphData.rootNode, { el: {
+          offsetWidth: 100,
+          offsetHeight: 50
+        }})
+        // this.$store.commit("setFlowData", this.graphData);
+        if (this.graphSetting.layouter && this.graphData.rootNode) {
+          console.log('需要布局的节点数量：', this.graphData.nodes.length)
+          this.graphSetting.layouter.placeNodes(this.graphData.nodes, this.graphData.rootNode, this.graphSetting)
+        }
       })
-    },
-    applyNewDataToCanvas() {
-      this.$store.commit("setFlowData", this.graphData);
     },
     loadGraphJsonData() {
       // 兼容以前的配置
@@ -191,7 +189,10 @@ export default {
           }
           var _childs = thisOrignNode.childs || thisOrignNode.children
           if (_childs && _childs.length > 0) {
+            thisOrignNode.targetNodes = _childs
             this.flatNodeData(_childs, thisOrignNode, nodes_collect, links_collect)
+          } else {
+            thisOrignNode.targetNodes = []
           }
         }
       })
