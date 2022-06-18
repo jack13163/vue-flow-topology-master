@@ -5,10 +5,7 @@
 </template>
 
 <script>
-// import SeeksRGStore from './core4vue/SeeksRGStore'
-// import { mapState } from 'vuex'
-// var _parent = this.$parent
-// console.log('GraphSettingPanel.vue:', _parent)
+
 export default {
   name: 'GraphBottomPanel',
   props: {
