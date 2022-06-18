@@ -36,7 +36,7 @@
         :transfer="false"
         @on-cancel="handleCloseJsonView"
       >
-        <json-viewer :expand-depth="1" copyable boxed :value="jsonData"></json-viewer>
+        <json-viewer :expand-depth="1" copyable boxed :value="this.graphData"></json-viewer>
       </Modal>
     </div>
   </div>
@@ -65,7 +65,6 @@ export default {
     return {
       isMouseDownStop: false,
       isJsonView: false,
-      jsonData: "暂无内容",
       graphSetting: {
         defaultNodeBorderWidth: 0,
         allowSwitchLineShape: true,
@@ -100,7 +99,7 @@ export default {
   watch: {
     flowMenuObj(newVal, oldVal) {
       if (newVal.type === "view-code") {
-        this.jsonData = this.$store.state.flowData;
+        this.graphData = this.$store.state.flowData;
         this.isJsonView = true;
       }
     },
@@ -109,8 +108,8 @@ export default {
     this.$store.commit("setJspInit", jsp.jsPlumb.getInstance({ Container: "zll-index" }));
   },
   mounted() {
-    this.jsonData = this.$store.state.flowData;
     this.resetViewSize()
+    this.init()
   },
   methods: {
     onIsAddNode() {
@@ -121,12 +120,11 @@ export default {
         this.$refs.operate.handleMiddleMenu(type);
       } else if (type === "auto-layout") {
         console.log("自动布局...")
-        this.setJsonData(this.jsonData)
         this.toggleAutoLayout()
       }
     },
     handleCloseJsonView() {
-      //  this.jsonData = this.$store.state.flowData;
+      //  this.graphData = this.$store.state.flowData;
     },
     handleMouseup(e) {
       this.isMouseDownStop = false;
@@ -144,24 +142,17 @@ export default {
       }
     },
     // 自动布局相关逻辑
-    setJsonData(jsonData) {
+    init() {
+      this.graphData = this.$store.state.flowData;
+      console.log('graphData:', this.graphData)
       this.viewSizeIsInited = true
-      this.nodeViewList = []
-      this.lineViewList = []
-      this.graphData.nodes = []
-      this.graphData.lines = []
-      this.graphData.nodes_map = {}
-      this.graphData.lines_map = {}
-      this.graphData.rootNode = null
-      console.log('set jsonData::', jsonData)
       if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
         var _defaultLayoutSetting = this.graphSetting.layouts[0]
         this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
       } else {
         console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
       }
-      this.loadGraphJsonData(jsonData)
-      console.log('graphData:', this.graphData)
+      this.loadGraphJsonData(this.graphData)
       this.graphData.rootNode = this.graphData.nodes[0]
       this.applyNewDataToCanvas()
       if (this.graphSetting.layouter && this.graphData.rootNode) {
@@ -177,45 +168,20 @@ export default {
       })
     },
     applyNewDataToCanvas() {
-      this.graphData.nodes.forEach(thisNode => {
-        if (thisNode.appended === false) {
-          thisNode.appended = true
-          this.nodeViewList.push(thisNode)
-        }
-      })
-      this.graphData.nodes = this.nodeViewList
-      this.jsonData.nodes = this.nodeViewList
-      this.$store.state.flowData = this.nodeViewList
+      this.$store.commit("setFlowData", this.graphData);
     },
-    loadNodes(_nodes) {
-      _nodes.forEach(thisNodeJson => {
-        let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
-        let __isNew = false
-        if (this.graphData.nodes_map[thisNode.id]) {
-          thisNode = this.graphData.nodes_map[thisNode.id]
-        } else {
-          __isNew = true
-        }
-        if (__isNew) {
-          this.graphData.nodes_map[thisNode.id] = thisNode
-          this.graphData.nodes.push(thisNode)
-          thisNode.seeks_id = this.seeksNodeIdIndex++
-          thisNode.appended = false
-        }
-      })
-    },
-    loadGraphJsonData(jsonData) {
+    loadGraphJsonData() {
       // 兼容以前的配置
       var _nodes = []
       var _links = []
-      this.flatNodeData(jsonData.nodes, null, _nodes, _links)
-      this.loadNodes(_nodes)
+      this.flatNodeData(this.graphData.nodes, null, _nodes, _links)
       console.log('节点预处理完毕')
     },
     flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect) {
       orign_nodes.forEach(thisOrignNode => {
         if (!thisOrignNode.flated) {
           thisOrignNode.flated = true
+          thisOrignNode.lot = {}
           nodes_collect.push(thisOrignNode)
           if (parentNode) {
             links_collect.push({
