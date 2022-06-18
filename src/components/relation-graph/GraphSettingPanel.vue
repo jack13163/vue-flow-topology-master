@@ -4,115 +4,12 @@
       <i class="el-icon-setting" />
     </div>
     <div v-if="showSettingPanel" :class="[$parent.isNeedFixedTools?'c-fixedLayout':'']" class="c-setting-panel">
-      <!--      <div style="padding:3px;">-->
-      <!--        搜索节点：-->
-      <!--        <el-autocomplete-->
-      <!--          v-model="$parent.search_text"-->
-      <!--          :fetch-suggestions="$parent.querySearchAsync"-->
-      <!--          :trigger-on-focus="true"-->
-      <!--          :label="'xxxx'"-->
-      <!--          size="small"-->
-      <!--          placeholder="输入节点名称"-->
-      <!--          clearable-->
-      <!--          style="width: 220px;"-->
-      <!--          @select="$parent.handleSelect">-->
-      <!--          <template slot-scope="{ item }">-->
-      <!--            <div class="c-suggestion-name">{{ item.text }}</div>-->
-      <!--          </template>-->
-      <!--        </el-autocomplete>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        布局方式：-->
-      <!--        <el-radio-group v-model="currentlayoutName" size="mini" @change="switchLayout">-->
-      <!--          <el-radio-button label="center">中心</el-radio-button>-->
-      <!--          <el-radio-button label="circle">环形</el-radio-button>-->
-      <!--          <el-radio-button label="tree">树状(L)</el-radio-button>-->
-      <!--          <el-radio-button label="tree-plus-r">树状(R)</el-radio-button>-->
-      <!--          <el-radio-button label="tree-plus-t">树状(T)</el-radio-button>-->
-      <!--          <el-radio-button label="tree-plus-b">树状(B)</el-radio-button>-->
-      <!--        </el-radio-group>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        线条样式：-->
-      <!--        <el-radio-group v-model="graphSetting.defaultLineShape" size="small">-->
-      <!--          <el-radio-button :label="1">直线</el-radio-button>-->
-      <!--          <el-radio-button :label="2">简洁</el-radio-button>-->
-      <!--          <el-radio-button :label="3">生动</el-radio-button>-->
-      <!--          <el-radio-button :label="5">鱼尾</el-radio-button>-->
-      <!--          <el-radio-button :label="4">折线</el-radio-button>-->
-      <!--        </el-radio-group>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        节点样式：-->
-      <!--        <el-radio-group v-model="graphSetting.defaultNodeShape" size="small">-->
-      <!--          <el-radio-button :label="0">圆形</el-radio-button>-->
-      <!--          <el-radio-button :label="1">长方形</el-radio-button>-->
-      <!--        </el-radio-group>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        图像缩放：-->
-      <!--        <el-input-number v-model="graphSetting.canvasZoom" :max="500" :min="10" :step="20" size="small"/>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        连线标签：-->
-      <!--        <el-switch-->
-      <!--          v-model="graphSetting.defaultShowLineLabel"-->
-      <!--          active-color="#13ce66"-->
-      <!--          inactive-color="#ff4949"/>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        联动拖拽：-->
-      <!--        <el-switch-->
-      <!--          v-model="graphSetting.isMoveByParentNode"-->
-      <!--          active-color="#13ce66"-->
-      <!--          inactive-color="#ff4949"/>-->
-      <!--        拖动父节点后子节点跟随-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;display: none;">-->
-      <!--        最大层级：-->
-      <!--        <el-radio-group v-model="graphSetting.maxLevel" size="small">-->
-      <!--          <el-radio-button :label="1">1级</el-radio-button>-->
-      <!--          <el-radio-button :label="2">2级</el-radio-button>-->
-      <!--          <el-radio-button :label="3">3级</el-radio-button>-->
-      <!--          <el-radio-button :label="4">4级</el-radio-button>-->
-      <!--          <el-radio-button :label="5">5级</el-radio-button>-->
-      <!--        </el-radio-group>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        自动布局：-->
-      <!--        <el-switch-->
-      <!--          v-model="graphSetting.autoLayouting"-->
-      <!--          active-color="#13ce66"-->
-      <!--          inactive-color="#ff4949"-->
-      <!--          @change="toggleAutoLayout" />-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        全屏展示：-->
-      <!--        <el-switch-->
-      <!--          v-model="graphSetting.fullscreen"-->
-      <!--          active-color="#13ce66"-->
-      <!--          inactive-color="#ff4949"/>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        刷新布局：-->
-      <!--        <el-button size="small" type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>-->
-      <!--      </div>-->
-      <!--      <div style="padding:3px;">-->
-      <!--        图片下载：-->
-      <!--        <el-button size="small" type="primary" icon="el-icon-download" @click="$parent.downloadAsImage('png')">下载png</el-button>-->
-      <!--        <el-button size="small" type="primary" icon="el-icon-download" @click="$parent.downloadAsImage('jpg')">下载jpg</el-button>-->
-      <!--      </div>-->
-      <!--      <slot :setting="graphSetting" name="settingPanelPlus"/>-->
     </div>
   </div>
 </template>
 
 <script>
 import SeeksRGLayouters from './core4vue/SeeksRGLayouters'
-// import SeeksRGStore from './core4vue/SeeksRGStore'
-// import { mapState } from 'vuex'
-// var _parent = this.$parent
-// console.log('GraphSettingPanel.vue:', _parent)
 export default {
   name: 'GraphSettingPanel',
   props: {
@@ -129,16 +26,6 @@ export default {
       currentLayoutName: ''
     }
   },
-  // computed: mapState({
-  //   graphSetting: () => _parent.graphSetting
-  // }),
-  // watch: {
-  //   'graphSetting.layoutName': function(newV, oldV) {
-  //     console.log('change layout:', newV, oldV)
-  //     SeeksRGLayouters.switchLayout(newV, this.graphSetting)
-  //     this.$parent.refresh()
-  //   }
-  // },
   methods: {
     toggleSettingPanel() {
       this.showSettingPanel = !this.showSettingPanel
