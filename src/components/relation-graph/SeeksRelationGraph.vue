@@ -103,9 +103,18 @@
   import GraphMiniToolBar from './GraphMiniToolBar'
   import GraphMiniNameFilter from './GraphMiniNameFilter'
   import GraphBottomPanel from './GraphBottomPanel'
+
   export default {
     name: 'SeeksRelationGraph',
-    components: { GraphBottomPanel, GraphMiniNameFilter, GraphMiniToolBar, GraphMiniView, SeeksRGNode, SeeksRGLink, GraphSettingPanel },
+    components: {
+      GraphBottomPanel,
+      GraphMiniNameFilter,
+      GraphMiniToolBar,
+      GraphMiniView,
+      SeeksRGNode,
+      SeeksRGLink,
+      GraphSettingPanel
+    },
     props: {
       options: {
         mustUseProp: false,
@@ -611,7 +620,6 @@
               }
             }
           }
-          // console.log('new Line Color:', thisLine.color, thisLine.arrow)
           var _arrow = thisLink.arrow
           if (thisLink.isHideArrow) {
             // do nothing
@@ -646,7 +654,6 @@
             thisLink.textPositon = { x: 0, y: 0 }
             thisLine.relations.push(thisLink)
           }
-          // console.log('addLine:', thisLine)
           if (__isNew) {
             this.graphData.lines.push(thisLine)
             this.graphData.lines_map[lineId1] = thisLine
@@ -722,7 +729,7 @@
         }
         var __root_id = jsonData['rootId']
         this.loadGraphJsonData(jsonData)
-        // console.log('graphData:', this.graphData)
+        console.log('graphData:', this.graphData)
         if (__root_id) {
           this.graphData.rootNode = this.graphData.nodes_map[__root_id]
         }
