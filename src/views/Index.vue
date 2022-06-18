@@ -78,8 +78,10 @@ export default {
             'layoutClassName': 'seeks-layout-force'
           }
         ],
-        defaultJunctionPoint: 'border'
+        defaultJunctionPoint: 'border',
         // 这里可以参考"Graph 图谱"中的参数进行设置
+        viewSize: {},
+        canvasZoom: 100
       },
       graphData: {
         nodes: [],
@@ -108,6 +110,7 @@ export default {
   },
   mounted() {
     this.jsonData = this.$store.state.flowData;
+    this.resetViewSize()
     console.log(this.jsonData)
   },
   methods: {
@@ -154,21 +157,13 @@ export default {
       console.log('set jsonData::', jsonData)
       if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
         var _defaultLayoutSetting = this.graphSetting.layouts[0]
-        if (window.SeeksGraphDebug) console.log('创建默认布局器：', this.graphSetting.layoutName)
-        if (_defaultLayoutSetting.layouter) {
-          this.graphSetting.layouter = _defaultLayoutSetting.layouter
-        } else {
-          this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
-        }
+        this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
       } else {
         console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
       }
-      var __root_id = jsonData['rootId']
       this.loadGraphJsonData(jsonData)
       console.log('graphData:', this.graphData)
-      if (__root_id) {
-        this.graphData.rootNode = this.graphData.nodes_map[__root_id]
-      }
+      this.graphData.rootNode = jsonData.nodes[0]
       if (!this.graphData.rootNode && this.graphData.nodes.length > 0) {
         this.graphData.rootNode = this.graphData.nodes[0]
       }
@@ -177,6 +172,13 @@ export default {
         console.log('需要布局的节点数量：', this.graphData.nodes.length)
         this.graphSetting.layouter.placeNodes(this.graphData.nodes, this.graphData.rootNode, this.graphSetting)
       }
+    },
+    resetViewSize() {
+      this.$nextTick(() => {
+        this.graphSetting.viewSize.width = this.$refs.flowContent.$el.clientWidth
+        this.graphSetting.viewSize.height = this.$refs.flowContent.$el.clientHeight
+        this.graphSetting.canvasZoom = 100
+      })
     },
     applyNewDataToCanvas() {
       this.graphData.nodes.forEach(thisNode => {
@@ -217,13 +219,11 @@ export default {
     },
     loadGraphJsonData(jsonData) {
       // 兼容以前的配置
-      if (!jsonData.links) jsonData.links = jsonData.lines
-      if (!jsonData.links) jsonData.links = jsonData.relations
-      var _orign_nodes = jsonData.nodes
+      this.graphData.links = jsonData.links
+      this.graphData.nodes = jsonData.nodes
       var _nodes = []
       var _links = []
-      this.flatNodeData(_orign_nodes, null, _nodes, _links)
-      jsonData.links = _links.concat(jsonData.links)
+      this.flatNodeData(jsonData.nodes, null, _nodes, _links)
       this.loadNodes(_nodes)
       console.log('节点预处理完毕')
     },
