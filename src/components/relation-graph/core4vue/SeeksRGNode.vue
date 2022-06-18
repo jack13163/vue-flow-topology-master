@@ -36,13 +36,6 @@
 // import SeeksRGStore from './SeeksRGStore'
 // import SeeksGraphMath from './SeeksGraphMath'
 import SeeksRGUtils from './SeeksRGUtils'
-// import Velocity from 'velocity-animate'
-// import { mapState } from 'vuex'
-// var _parent = this.$parent
-// function isAllowShowNode(isShow, isHide, parent) {
-//   const _r = isShow !== false && isHide !== true && (!parent || isAllowShowNode(parent.isShow, parent.isHide, parent.lot.parent) === true)
-//   return _r
-// }
 export default {
   name: 'SeeksRGNode',
   components: { },
@@ -75,28 +68,12 @@ export default {
       return this.nodeProps.expanded===false ? 'c-expanded' : 'c-collapsed'
     }
   },
-  // show() {
-  //
-  // },
   watch: {
-    // 'nodeProps.isShow': function(v) {
-    //   console.log('nodeProps.isShow:', v)
-    //   if (v === true) {
-    //     this.$nextTick(() => {
-    //       this.nodeProps.el.offsetWidth = this.$refs.seeksRGNode.offsetWidth
-    //       this.nodeProps.el.offsetHeight = this.$refs.seeksRGNode.offsetHeight
-    //       console.log('node 挂载 el size:', this.$refs.seeksRGNode.offsetWidth, this.$refs.seeksRGNode.offsetHeight)
-    //     })
-    //   }
-    // }
   },
   created() {
-    // Vue.version
   },
   mounted() {
     this.refreshNodeProperties()
-    // this.leave(this.$refs.seeksRGNode)
-    // console.log('node show:', this.nodeProps.text, this.$parent.$slots.node)
   },
   beforeDestroy() {
     const elx = this.$refs.seeksRGNode
@@ -105,27 +82,8 @@ export default {
   methods: {
     refreshNodeProperties() {
       this.nodeProps.el = this.$refs.seeksRGNode
-      // console.log('node 挂载 el:', this.nodeProps.text, this.nodeProps.el.offsetWidth, this.nodeProps.el.offsetHeight)
-      // this.$nextTick(() => {
-      //   this.nodeProps.el.offsetWidth = this.$refs.seeksRGNode.offsetWidth
-      //   this.nodeProps.el.offsetHeight = this.$refs.seeksRGNode.offsetHeight
-      //   console.log('node 挂载 el size:', this.$refs.seeksRGNode.offsetWidth, this.$refs.seeksRGNode.offsetHeight)
-      // })
-      // this.nodeProps.em = true
-      // if (this.nodeProps.style === 0) {
-      //   this.nodeProps.name = SeeksRGUtils.transName4Circle(this.nodeProps.name, this.nodeProps.el.offsetWidth)
-      //   console.log('resize node name:', this.name)
-      // }
-      // this.nodeProps.el_width = this.$refs.seeksRGNode.offsetWidth
-      // this.nodeProps.el_height = this.$refs.seeksRGNode.offsetHeight
-      // var __this = this
-      // setInterval(function() {
-      //   __this.nodeProps.x = __this.nodeProps.x
-      //   __this.nodeProps.y = __this.nodeProps.y
-      // }, 1000)
     },
     getNodeName() {
-      // if (this.hovering) return 'N-' + this.nodeProps.seeks_id
       if (this.hovering) {
         return this.nodeProps.text
       }
@@ -157,8 +115,6 @@ export default {
         }
       }
       return _text_arr.join('')
-      // return _num_l + '/' + _num_c
-      // return this.nodeProps.text
     },
     expandOrCollapseNode(e) {
       if (this.nodeProps.expanded === false) {
@@ -219,31 +175,7 @@ export default {
         this.onNodeClick(this.nodeProps, e)
       }
     },
-    // beforeEnter(el) {
-    //   console.log('beforeEnter')
-    //   el.style.opacity = 0
-    //   el.style.transformOrigin = 'left'
-    // },
-    // enter(el, done) {
-    //   console.log('enter')
-    //   Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
-    //   Velocity(el, { fontSize: '1em' }, { complete: done })
-    // },
-    // leave(el, done) {
-    //   console.log('leave')
-    //   Velocity(el, { translateX: '0px', rotateZ: '360deg' }, { duration: 600 })
-    //   // Velocity(el, { rotateZ: '180deg' }, { loop: 1 })
-    //   // Velocity(el, {
-    //   //   rotateZ: '45deg',
-    //   //   translateY: '30px',
-    //   //   translateX: '30px',
-    //   //   opacity: 0
-    //   // }, { complete: done })
-    // },
     getLightColor(col) {
-      // if (this.borderColor !== '') {
-      //   return this.borderColor
-      // }
       if (col[0] === '#') {
         var _s = col.substring(1)
         if (_s.length === 3) {
@@ -339,13 +271,6 @@ export default {
     /*text-overflow: inherit;*/
     box-shadow: 0px 0px 5px #FFC5A6;
   }
-  /*.rel-node{*/
-    /*display: table;*/
-  /*}*/
-  /*.rel-node span{*/
-    /*display: table-cell;*/
-    /*vertical-align:middle;*/
-  /*}*/
   .rel-node-type-button{
     border-radius: 25px;
     color: blue;
@@ -355,20 +280,12 @@ export default {
   }
   .rel-node-checked{
     box-shadow: 0px 0px 10px #FD8B37;
-    /*border-color: #BA7909;*/
-    /*background-color: #FD8B37;*/
-    /*color: #ffffff;*/
-    /* firefox bug fix - won't rotate at 90deg angles */
     -moz-transform: rotate(-89deg) translateX(-190px);
     animation-timing-function:linear;
     animation: ACTRGNodeInit 2s;
   }
   .rel-node-selected{
     box-shadow: 0px 0px 10px #FD8B37;
-    /*border-color: #BA7909;*/
-    /*background-color: #FD8B37;*/
-    /*color: #ffffff;*/
-    /* firefox bug fix - won't rotate at 90deg angles */
     -moz-transform: rotate(-89deg) translateX(-190px);
     animation-timing-function:linear;
     animation: ACTRGNodeInit 2s;

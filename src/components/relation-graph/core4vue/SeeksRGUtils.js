@@ -5,7 +5,6 @@ var __start_info = { x: 0, y: 0 }
 var SeeksRGUtils = {
   startDrag(e, positionModel, ondraged) {
     __ondraged = ondraged
-    // console.log('startDrag:', __tmp_basePosition, e.clientX, e.clientY)
     __tmp_positionModel = positionModel
     __start_info.x = __tmp_positionModel.x
     __start_info.y = __tmp_positionModel.y
@@ -15,12 +14,10 @@ var SeeksRGUtils = {
     document.body.addEventListener('mouseup', SeeksRGUtils.onNodeDragend)
   },
   onNodeMove(e) {
-    // console.log('move', __tmp_basePosition, e.clientX, e.clientY)
     __tmp_positionModel.x = e.clientX + __tmp_basePosition.x
     __tmp_positionModel.y = e.clientY + __tmp_basePosition.y
   },
   onNodeDragend() {
-    // console.log('onNodeDragend', __tmp_positionModel.x - __start_info.x, __tmp_positionModel.y - __start_info.y)
     document.body.removeEventListener('mousemove', SeeksRGUtils.onNodeMove)
     document.body.removeEventListener('mouseup', SeeksRGUtils.onNodeDragend)
     if (__ondraged) {
@@ -42,15 +39,6 @@ var SeeksRGUtils = {
     if (_thisLevelCharsArr.length > 0) {
       result.push(_thisLevelCharsArr.join(''))
     }
-    // if (result.length < 3) {
-    //   result.unshift('')
-    //   if (result.length < 3) {
-    //     result.unshift('')
-    //     if (result.length < 3) {
-    //       result.unshift('')
-    //     }
-    //   }
-    // }
     return result.join('<br>')
   },
   getColorId(color) {

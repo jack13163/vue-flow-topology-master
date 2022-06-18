@@ -51,8 +51,6 @@ const SeeksStoreManager = {
       viewELSize: { width: 1300, height: 800, left: 0, top: 100 },
       viewNVInfo: { width: 1300, height: 800, x: 0, y: 100 },
       canvasNVInfo: { width: 1300, height: 800, x: 0, y: 100 },
-      // NMViewCenter: { x: 0, y: 0 },
-      // NMCanvasCenter: { x: 0, y: 0 },
       defaultLineMarker: {
         markerWidth: 12,
         markerHeight: 12,
@@ -61,22 +59,6 @@ const SeeksStoreManager = {
         color: undefined,
         data: 'M2,2 L10,6 L2,10 L6,6 L2,2'
       },
-      // defaultLineMarker: {
-      //   markerWidth: 6,
-      //   markerHeight: 6,
-      //   refX: 3,
-      //   refY: 3,
-      //   color: undefined,
-      //   data: 'M 0 0, V 6, L 4 3, Z'
-      // },
-      // defaultLineMarker: { // 另一种箭头样式
-      //   markerWidth: 15,
-      //   markerHeight: 15,
-      //   refX: 50,
-      //   refY: 7,
-      //   color: '#128bed',
-      //   data: 'M 14 7 L 1 .3 L 4 7 L .4 13 L 14 7, Z'
-      // },
       canvasSize: {
         width: 2000,
         height: 2000
@@ -88,8 +70,6 @@ const SeeksStoreManager = {
         zoom_buff_y: 0
       },
       resetViewSize: (config) => {
-        // config.canvasOffset.x = parseInt(config.viewSize.width - config.canvasSize.width) / 2
-        // config.canvasOffset.y = parseInt(config.viewSize.height - config.canvasSize.height) / 2
         config.canvasOffset.x = config.viewNVInfo.width / 2 - 100
         config.canvasOffset.y = config.viewNVInfo.height / 2 - 100
       }
@@ -123,7 +103,6 @@ const SeeksStoreManager = {
                 }
               })
               _graphSetting[key] = _new_arr
-              // if (window.SeeksGraphDebug) console.log('   user setting array:', key, 'copy size:', _new_arr.length)
             } else {
               if (window.SeeksGraphDebug) console.log('user setting value:', key)
               _graphSetting[key] = _thisUserValue
@@ -164,8 +143,6 @@ const SeeksStoreManager = {
     if (thisLayout.defaultNodeBorderWidth === undefined) thisLayout.defaultNodeBorderWidth = 1
     if (thisLayout.defaultLineColor === undefined) thisLayout.defaultLineColor = '#FD8B37'
     if (thisLayout.defaultLineWidth === undefined) thisLayout.defaultLineWidth = 1
-    // if (thisLayout.defaultLineShape === undefined) thisLayout.defaultLineShape = 2
-    // if (thisLayout.defaultNodeShape === undefined) thisLayout.defaultNodeShape = 1
     if (thisLayout.defaultNodeWidth === undefined) thisLayout.defaultNodeWidth = undefined
     if (thisLayout.defaultNodeHeight === undefined) thisLayout.defaultNodeHeight = undefined
     if (thisLayout.defaultShowLineLabel === undefined) thisLayout.defaultShowLineLabel = true
@@ -224,11 +201,8 @@ const SeeksStoreManager = {
 function SeeksRGStore(_graphSetting) {
   this.graphSetting = _graphSetting
   this.resetViewSize = function() {
-    // state.graphSetting.canvasOffset.x = parseInt(state.graphSetting.viewSize.width - state.graphSetting.canvasSize.width) / 2
-    // state.graphSetting.canvasOffset.y = parseInt(state.graphSetting.viewSize.height - state.graphSetting.canvasSize.height) / 2
     this.graphSetting.canvasOffset.x = 0 // state.graphSetting.viewNVInfo.width / 2 - 100
     this.graphSetting.canvasOffset.y = 0 // state.graphSetting.viewNVInfo.height / 2 - 100
-    // console.log('resetViewSize:', state.graphSetting.viewSize.width, state.graphSetting.canvasSize.width, state.graphSetting.canvasZoom / 100, state.graphSetting.canvasSize.width * (state.graphSetting.canvasZoom / 100), state.graphSetting.canvasOffset.x)
   }
   this.getOptions = function() {
     var _options = {}

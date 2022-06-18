@@ -1,18 +1,10 @@
 <template>
   <g v-if="lineProps.isHide !== true && isAllowShowNode(lineProps.fromNode) && isAllowShowNode(lineProps.toNode)" ref="seeksRGLink" transform="translate(0,0)">
-    <!--<path :d="createLinePath(lineProps.fromNode, lineProps.toNode)" :class="[lineProps.styleClass,graphSetting.checkedLineId==lineProps.seeks_id?'c-rg-line-checked':'']" :stroke="lineProps.color?linkProps.color:graphSetting.defaultLineColor" :marker-end="'url(\'#' + (linkProps.arrow?linkProps.arrow:'arrow-default') + '\')'" fill="none" class="c-rg-line" @click="onClick($event)" />-->
-    <!--<g v-if="graphSetting.defaultShowLineLabel" :transform="getTextTransform(textPositon.x,textPositon.y,textPositon.rotate)">-->
-    <!--<text v-for="thisRelation in lineProps.relations" :key="'t-'+thisRelation.id" :x="0" :y="0" :style="{fill:(thisRelation.fontColor?thisRelation.fontColor:(thisRelation.color?thisRelation.color:undefined))}" class="c-rg-link-text" @click="onClick($event)">-->
-    <!--&lt;!&ndash;<textPath :xlink:href="'#'+lineProps.id">{{ lineProps.text }}</textPath>&ndash;&gt;-->
-    <!--{{ thisRelation.text }}-->
-    <!--</text>-->
-    <!--</g>-->
     <template v-for="(thisRelation, ri) in lineProps.relations">
       <g v-if="thisRelation.isHide === false" :key="'l-'+thisRelation.id">
         <path :d="createLinePath(lineProps.fromNode, lineProps.toNode, ri, thisRelation)" :class="[thisRelation.styleClass,graphSetting.checkedLineId==lineProps.seeks_id?'c-rg-line-checked':'']" :stroke="thisRelation.color?thisRelation.color:graphSetting.defaultLineColor" :style="{'stroke-width': (thisRelation.lineWidth?thisRelation.lineWidth:graphSetting.defaultLineWidth) + 'px'}" :marker-end="getArrow(thisRelation.isHideArrow, thisRelation.arrow, thisRelation.color)" fill="none" class="c-rg-line" @click="onClick($event)" />
         <g v-if="graphSetting.defaultShowLineLabel && graphSetting.canvasZoom>40" :transform="getTextTransform(thisRelation, thisRelation.textPositon.x,thisRelation.textPositon.y,thisRelation.textPositon.rotate)">
           <text :key="'t-'+thisRelation.id" :x="0" :y="0" :style="{fill:(thisRelation.fontColor?thisRelation.fontColor:(thisRelation.color?thisRelation.color:undefined))}" class="c-rg-link-text" @click="onClick($event)">
-            <!--<textPath :xlink:href="'#'+lineProps.id">{{ lineProps.text }}</textPath>-->
             {{ thisRelation.text }}
           </text>
         </g>
@@ -63,14 +55,7 @@ export default {
   watch: {
   },
   mounted() {
-    // this.refresh()
-    // var __this = this
-    // setInterval(this.onLineClick, 1000)
   },
-  // beforeDestroy() {
-  //   const elx = this.$refs.seeksRGLink
-  //   elx.remove()
-  // },
   methods: {
     getTextTransform(thisRelation, x, y, rotate) {
       if (!x || !y) {
@@ -93,8 +78,6 @@ export default {
       }
     },
     createLinePath(from, to, ri, relationData) {
-      // console.log('redrawLine:', this.lineProps.fromNode.id, this.lineProps.toNode.id, ri)
-      // console.log('_point:', _point)
       if (!ri)ri = 0
       var __lineShape = relationData.lineShape === undefined ? this.graphSetting.defaultLineShape : relationData.lineShape
       var __lineDirection = relationData.lineDirection === undefined ? this.graphSetting.layoutDirection : relationData.lineDirection
@@ -205,7 +188,6 @@ export default {
           }
         }
       } else if (__lineShape === 2) {
-        // var __buff_type_x = __end.x > __start.x ? 1 : -1
         const __buff_type_y = __end.y > __start.y ? 1 : -1
         const _base = Math.abs(__buff_x) + Math.abs(__buff_y)
         relationData.textPositon.x = parseInt(__end.x - ((__buff_x) / _base * 60) - 20)
@@ -217,7 +199,6 @@ export default {
           __path = 'M' + fx + ',' + fy + ' c' + (__buff_type * 30) + ',' + (0) + ' ' + (__buff_type * -10) + ',' + (__buff_y * distanceRate) + ' ' + __buff_x + ',' + __buff_y
         }
       } else if (__lineShape === 6) {
-        // const __buff_type_x = __end.x > __start.x ? 1 : -1
         const __buff_type_y = __end.y > __start.y ? 1 : -1
         const _base = Math.abs(__buff_x) + Math.abs(__buff_y)
         relationData.textPositon.x = parseInt(__end.x - ((__buff_x) / _base * 60) - 20)
@@ -234,12 +215,9 @@ export default {
         if (__lineDirection === 'v') {
           __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (__buff_y * distanceRate) + ' ' + (0) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y
         } else {
-          // console.log('start:', __start, __end, __buff_x, __buff_y)
           __path = 'M' + fx + ',' + fy + ' c' + (__buff_type * 30) + ',' + (0) + ' ' + (__buff_type * -10) + ',' + (__buff_y * distanceRate) + ' ' + __buff_x + ',' + __buff_y
         }
       } else if (__lineShape === 5) {
-        // relationData.text.x = __start.x + __buff_x / 2 - 33
-        // relationData.text.y = __start.y + __buff_y / 2 - 3
         relationData.textPositon.x = __end.x - (__buff_type * 63)
         relationData.textPositon.y = __end.y + 3
         const distanceRate = ((1 / (this.lineProps.relations.length + 1)) * (ri + 1)) - 0.5 + 0.5
@@ -248,16 +226,6 @@ export default {
         } else {
           __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (0) + ' ' + (__buff_x * distanceRate) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y // 鱼尾
         }
-        // __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (0) + ' ' + (0) + ',' + (__buff_y * 0.5) + ' ' + __buff_x + ',' + __buff_y
-        // __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (0) + ' ' + (-100) + ',' + (__buff_y * 0.5) + ' ' + __buff_x + ',' + __buff_y
-        // __path = 'M' + fx + ',' + fy + ' c' + (30) + ',' + (0) + ' ' + (-10) + ',' + (__buff_y * 0.5) + ' ' + __buff_x + ',' + __buff_y
-        // __path = 'M' + fx + ',' + fy + ' c' + (50) + ',' + (0) + ' ' + (-50) + ',' + (__buff_y * 0.5) + ' ' + __buff_x + ',' + __buff_y
-        // __path = 'M' + fx + ',' + fy + ' c' + (100) + ',' + (0) + ' ' + (10) + ',' + (__buff_y * 0.5) + ' ' + __buff_x + ',' + __buff_y
-        // __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (0) + ' ' + (__buff_x * 0.5) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y // 类似鱼尾
-        // __path = 'M' + fx + ',' + fy + ' c' + (__buff_x * 0.5) + ',' + (0) + ' ' + (0) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y // 三角
-        // __path = 'M' + fx + ',' + fy + ' c' + (0) + ',' + (0) + ' ' + (__buff_x * 0.5) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y // 鱼尾
-        // __path = 'M' + fx + ',' + fy + ' c' + (50) + ',' + (__buff_y * 0.5) + ' ' + (0) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y //
-        // __path = 'M' + fx + ',' + fy + ' c' + (50) + ',' + (__buff_y * 0.5) + ' ' + (0) + ',' + (0) + ' ' + __buff_x + ',' + __buff_y
       } else {
         var _angle_type = SeeksGraphMath.getAngleType(__buff_x, __buff_y)
         relationData.textPositon.rotate = SeeksGraphMath.getTextAngle(fx, fy, tx, ty)
@@ -302,12 +270,6 @@ export default {
 </script>
 
 <style type="">
-  /*.RGLine-enter-active {*/
-    /*transition: all .3s ease;*/
-  /*}*/
-  /*.RGLine-leave-active {*/
-    /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-  /*}*/
   .c-rg-link-text {
     fill: #888888;
     font-size: 12px;
@@ -315,17 +277,11 @@ export default {
   .c-rg-line {
     z-index: 1000;
     fill-rule: nonzero;
-    /*marker-end: url('#arrow');*/
-    /* firefox bug fix - won't rotate at 90deg angles */
-    /*-moz-transform: rotate(-89deg) translateX(-190px);*/
-    /*animation-timing-function:linear;*/
-    /*animation: ACTRGLineInit 1s;*/
   }
   .c-rg-line-tool {
     stroke-dasharray: 5,5,5;
   }
   .c-rg-line-flash {
-    /* firefox bug fix - won't rotate at 90deg angles */
     -moz-transform: rotate(-89deg) translateX(-190px);
     animation-timing-function:linear;
     animation: ACTRGLineChecked 10s;

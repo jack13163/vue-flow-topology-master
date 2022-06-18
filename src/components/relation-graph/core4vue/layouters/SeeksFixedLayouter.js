@@ -19,11 +19,9 @@ function SeeksFixedLayouter(layoutSetting, graphSetting) {
     this.__origin_nodes = allNodes
     this.rootNode = rootNode
     allNodes.forEach(thisNode => {
-      // thisNode.lot = { eached: false }
       thisNode.lot.eached = false
       thisNode.lot.notLeafNode = false
       thisNode.lot.childs = []
-      // thisNode.lot.parent = undefined
       thisNode.lot.index_of_parent = 0
       thisNode.lot.strength = 0
       thisNode.lot.prevNode = undefined

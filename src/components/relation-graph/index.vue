@@ -12,10 +12,6 @@
     <slot :graph="this" name="graphPlug" />
     <div :style="{width: '100%',height : '100%', 'background-image': 'url('+graphSetting.backgrounImage+')'}" :class="[graphSetting.layoutClassName, (graphSetting.backgrounImageNoRepeat?'rel-map-background-norepeat':'')]" class="rel-map" @mousedown.left.stop="onDragStart($event)" @mousewheel="mouseListener">
       <div ref="seeksRGCanvas" :style="canvasSizeAndPosition" class="rel-map-canvas">
-<!--        <svg aria-hidden="true" style="position: absolute; width: 0px; height: 0px; overflow: hidden;">-->
-<!--          <symbol id="icon-add-select" viewBox="0 0 128 128"><path d="M544 213.333333v266.666667H810.666667v64H544V810.666667h-64V544H213.333333v-64h266.666667V213.333333z"></path></symbol>-->
-<!--          <symbol id="icon-sami-select" viewBox="0 0 128 128"><path d="M810.666667 480v64H213.333333v-64z"></path></symbol>-->
-<!--        </svg>-->
         <div class="rel-nodediv rel-nodediv-for-webkit">
           <SeeksRGNode v-for="thisNode in nodeViewList" :key="thisNode.seeks_id" :node-props="thisNode" :on-node-click="onRGNodeClick" :graph-setting="graphSetting">
             <template slot="node" slot-scope="{node}">
@@ -30,18 +26,6 @@
                 <stop offset="0%" stop-color="#e52c5c" />
                 <stop offset="100%" stop-color="#FD8B37" />
               </linearGradient>
-              <!--              <marker-->
-              <!--                :id="graphSetting.instanceId+'-arrow-default'"-->
-              <!--                markerUnits="strokeWidth"-->
-              <!--                markerWidth="12"-->
-              <!--                markerHeight="12"-->
-              <!--                viewBox="0 0 12 12"-->
-              <!--                refX="6"-->
-              <!--                refY="6"-->
-              <!--                orient="auto"-->
-              <!--              >-->
-              <!--                <path :style="{fill: graphSetting.defaultLineColor}" d="M2,2 L10,6 L2,10 L6,6 L2,2" />-->
-              <!--              </marker>-->
               <marker
                       :id="graphSetting.instanceId+'-arrow-default'"
                       :markerWidth="graphSetting.defaultLineMarker.markerWidth"
@@ -79,19 +63,6 @@
               >
                 <path :fill="graphSetting.defaultLineMarker.color || thisColor.color" :d="graphSetting.defaultLineMarker.data" />
               </marker>
-              <!--<marker-->
-              <!--v-for="thisColor in allLineColors"-->
-              <!--:id="graphSetting.instanceId+'-arrow-'+thisColor.id"-->
-              <!--:key="thisColor.id"-->
-              <!--marker-units="strokeWidth"-->
-              <!--orient="auto"-->
-              <!--markerWidth="15"-->
-              <!--markerHeight="15"-->
-              <!--refX="50"-->
-              <!--refY="7"-->
-              <!--&gt;-->
-              <!--<path :fill="thisColor.color" d="M 14 7 L 1 .3 L 4 7 L .4 13 L 14 7, Z" />-->
-              <!--</marker>-->
             </defs>
             <SeeksRGLink v-for="thisLine in lineViewList" :key="thisLine.seeks_id" :line-props="thisLine" :graph-setting="graphSetting" :on-line-click="onRGLineClick" />
           </svg>
@@ -109,25 +80,6 @@
       <div><pre>{{ JSON.stringify(graphSetting.viewNVInfo, null, 2) }}</pre></div>
       <div><pre>{{ JSON.stringify(graphSetting.canvasNVInfo, null, 2) }}</pre></div>
     </div>
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (currentZoomSet.NMCanvasStart.x + currentZoomSet.NMViewPosition.x) + 'px', top: currentZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;background-color: blue;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (currentZoomSet.NMCanvasStart.y + currentZoomSet.NMViewPosition.y) + 'px', left: currentZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;background-color: blue;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (currentZoomSet.NMCanvasCenter.x + currentZoomSet.NMViewPosition.x) + 'px', top: currentZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:4px;height:2000px;z-index: 99999;background-color: green;opacity: 0.4;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (currentZoomSet.NMCanvasCenter.y + currentZoomSet.NMViewPosition.y) + 'px', left: currentZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:4px;width:2000px;z-index: 99999;background-color: green;opacity: 0.4;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (currentZoomSet.NMCanvasEnd.x + currentZoomSet.NMViewPosition.x) + 'px', top: currentZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;background-color: blue;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (currentZoomSet.NMCanvasEnd.y + currentZoomSet.NMViewPosition.y) + 'px', left: currentZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;background-color: blue;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (currentZoomSet.NMZoomCenter.x + currentZoomSet.NMViewPosition.x - 10) + 'px', top: currentZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;background-color: red;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (currentZoomSet.NMZoomCenter.y + currentZoomSet.NMViewPosition.y - 10) + 'px', left: currentZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;background-color: red;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (currentZoomSet.NMViewCenter.x + currentZoomSet.NMViewPosition.x) + 'px', top: currentZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;background-color: black;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (currentZoomSet.NMViewCenter.y + currentZoomSet.NMViewPosition.y) + 'px', left: currentZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;background-color: black;opacity: 0.6;"/>-->
-
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (newZoomSet.NMCanvasStart.x + newZoomSet.NMViewPosition.x) + 'px', top: newZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;border-left: blue dotted 2px;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (newZoomSet.NMCanvasStart.y + newZoomSet.NMViewPosition.y) + 'px', left: newZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;border-top: blue dotted 2px;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (newZoomSet.NMCanvasCenter.x + newZoomSet.NMViewPosition.x) + 'px', top: newZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:4px;height:2000px;z-index: 99999;border-left: green dotted 2px;opacity: 0.4;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (newZoomSet.NMCanvasCenter.y + newZoomSet.NMViewPosition.y) + 'px', left: newZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:4px;width:2000px;z-index: 99999;border-top: green dotted 2px;opacity: 0.4;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (newZoomSet.NMCanvasEnd.x + newZoomSet.NMViewPosition.x) + 'px', top: newZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;border-left: blue dotted 2px;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (newZoomSet.NMCanvasEnd.y + newZoomSet.NMViewPosition.y) + 'px', left: newZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;border-top: blue dotted 2px;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'left': (zoomCenter_of_newSize.x + newZoomSet.NMViewPosition.x - 10) + 'px', top: newZoomSet.NMViewPosition.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;border-left: red dotted 2px;opacity: 0.6;"/>-->
-    <!--<div v-if="isShowZoomCenter" :style="{'top': (zoomCenter_of_newSize.y + newZoomSet.NMViewPosition.y - 10) + 'px', left: newZoomSet.NMViewPosition.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;border-top: red dotted 2px;opacity: 0.6;"/>-->
     <div v-if="isShowZoomCenter" :style="{'left': (graphSetting.canvasNVInfo.x + graphSetting.viewNVInfo.x) + 'px', top: graphSetting.viewNVInfo.y + 'px' }" style="position: fixed;top:0px;width:2px;height:2000px;z-index: 99999;border-left: blue dotted 2px;opacity: 0.6;" />
     <div v-if="isShowZoomCenter" :style="{'top': (graphSetting.canvasNVInfo.y + graphSetting.viewNVInfo.y) + 'px', left: graphSetting.viewNVInfo.x + 'px' }" style="position: fixed;left:0px;height:2px;width:2000px;z-index: 99999;border-top: blue dotted 2px;opacity: 0.6;" />
     <div v-if="isShowZoomCenter" :style="{'left': (graphSetting.canvasNVInfo.x + graphSetting.canvasNVInfo.width/2 + graphSetting.viewNVInfo.x) + 'px', top: graphSetting.viewNVInfo.y + 'px' }" style="position: fixed;top:0px;width:4px;height:2000px;z-index: 99999;border-left: green dotted 2px;opacity: 0.4;" />
@@ -194,17 +146,6 @@
     },
     data() {
       var wheelEvent = {}
-      // console.log('this.options.disableZoom:', this.options.disableZoom)
-      // if (this.options.disableZoom) {
-      //   wheelEvent = {
-      //     'mousewheel':this.mouseListener
-      //   }
-      // } else {
-      //   wheelEvent = {
-      //     'mousewheel':this.mouseListener
-      //   }
-      //   console.log('wheelEvent:', wheelEvent)
-      // }
       return {
         wheelEvent,
         version: '1.1.0',
@@ -287,9 +228,6 @@
       window.addEventListener('scroll', function() {
         this.syncToolsPosition()
       }.bind(this))
-      // setInterval(function() {
-      //   this.showZoomCenter()
-      // }.bind(this), 1000)
     },
     beforeDestroy() {
       this.alive = false
@@ -302,18 +240,6 @@
       this.syncToolsPosition()
     },
     methods: {
-      // getCanvasSizeAndPosition() {
-      //   console.log('重新计算:getCanvasSizeAndPosition')
-      //   return {
-      //     'width': this.graphSetting.canvasSize.width + 'px',
-      //     'height': this.graphSetting.canvasSize.height + 'px',
-      //     'margin-left': (this.graphSetting.canvasOffset.x) + 'px',
-      //     'margin-top': (this.graphSetting.canvasOffset.y) + 'px',
-      //     'background-color': this.canvasBackgroundColor,
-      //     'transform': 'scale(' + this.graphSetting.canvasZoom / 100 + ',' + this.graphSetting.canvasZoom / 100 + ')'
-      //     // 'transform-origin': (this.graphSetting.canvasOffset.zoom_buff_x * 100).toFixed(2) + '% ' + (this.graphSetting.canvasOffset.zoom_buff_y * 100).toFixed(2) + '%'
-      //   }
-      // },
       init() {
         this.$refs.rgCanvas.style.setProperty('--stroke', 'url(\'#' + this.graphSetting.instanceId + '-lineStyle\')')
         this.$refs.rgCanvas.style.setProperty('--markerEnd', 'url(\'#' + this.graphSetting.instanceId + '-arrow-default\')')
@@ -360,11 +286,7 @@
                 var _stuff_height = _max_y - _min_y + 50
                 var _final_x = (this.graphSetting.viewSize.width - _stuff_width)/2 - _min_x
                 var _final_y = (this.graphSetting.viewSize.height - _stuff_height)/2 - _min_y
-                // if (window.SeeksGraphDebug) console.log('_min_x, _min_y, _stuff_width, _stuff_height:', _min_x, _min_y, _stuff_width, _stuff_height)
-                // var _final_x = -_min_x
-                // var _final_y = -_min_y
                 this.animateGoto(_final_x, _final_y, 500, () => {
-                  // this.graphSetting.checkedNodeId = thisNode.id
                   this.refreshNVAnalysisInfo()
                 })
               })
@@ -401,11 +323,6 @@
         console.log('mouseListenerEmpty')
       },
       mouseListener(e) {
-        // if (e.target !== this.$refs.seeksRGCanvas) {
-        //   return
-        // }
-        // e.stopPropagation()
-        // console.log('mouseListener')
         if (this.graphSetting.disableZoom) {
           e.cancelBubble = false
           return true
@@ -421,13 +338,11 @@
           x: e.clientX,
           y: e.clientY
         }
-        // console.log('---- center:', userZoomCenter.x, userZoomCenter.y)
         var _isMac = /macintosh|mac os x/i.test(navigator.userAgent)
         var _deltaY = e.deltaY
         if (_deltaY === undefined) {
           _deltaY = e.wheelDelta
         }
-        // console.log('mouseListenerEmpty:', _isMac, e.deltaY, e.wheelDelta, e.which, e.detail)
         var _zoomDirection = _isMac ? 1 : -1
         if (_deltaY > 0) {
           this.zoom(5 * _zoomDirection, userZoomCenter)
@@ -466,15 +381,6 @@
         }
         var __new_zoom_value = this.graphSetting.canvasZoom + buff
         var zoomCenter = this.showZoomCenter(userZoomCenter, buff)
-        // console.log('zoomCenter:', zoomCenter.x, zoomCenter.y)
-        // if (userZoomCenter) return
-        // this.graphSetting.canvasOffset.zoom_buff_x = zoomCenter.buff_x
-        // this.graphSetting.canvasOffset.zoom_buff_y = zoomCenter.buff_y
-        // var _buff_x = this.canvasCenter.x - zoomCenter.x
-        // var _buff_y = this.canvasCenter.y - zoomCenter.y
-        // console.log('offset buff:', _buff_x.toFixed(0), _buff_y.toFixed(0))
-        // this.graphSetting.canvasOffset.zoom_buff_x = _buff_x * ((this.graphSetting.canvasZoom - 100) / 100)
-        // this.graphSetting.canvasOffset.zoom_buff_y = _buff_y * ((this.graphSetting.canvasZoom - 100) / 100)
         this.graphSetting.canvasOffset.x += zoomCenter.buff_x
         this.graphSetting.canvasOffset.y += zoomCenter.buff_y
         this.graphSetting.canvasZoom = __new_zoom_value
@@ -488,8 +394,6 @@
         var _new_zoom = (this.graphSetting.canvasZoom + zoomBuff) / 100
         this.currentZoomSet = this.analysisByZoom(_current_zoom, userZoomCenter)
         this.newZoomSet = this.analysisByZoom(_new_zoom, userZoomCenter)
-        // console.log('this.currentZoomSet:', this.currentZoomSet)
-        // console.log('this.currentZoomSet:', this.newZoomSet)
         const a = _new_zoom / _current_zoom
         const b = 0
         const c = 0
@@ -502,9 +406,6 @@
         var buff_y = this.currentZoomSet.NMViewBuff.y - this.zoomCenter_of_newSize.y
         this.zoomCenter_of_newSize.x += this.currentZoomSet.NMCanvasCenter.x
         this.zoomCenter_of_newSize.y += this.currentZoomSet.NMCanvasCenter.y
-        // e = this.currentZoomSet.NMViewBuff.x
-        // f = this.currentZoomSet.NMViewBuff.y
-        // new start
         var old_x = this.currentZoomSet.NMCanvasStart.x - this.currentZoomSet.NMCanvasCenter.x
         var old_y = this.currentZoomSet.NMCanvasStart.y - this.currentZoomSet.NMCanvasCenter.y
         var new_x = a * old_x + c * old_y + e
@@ -611,8 +512,6 @@
         const windowHeight = this.getWindowHeight()
         var _box_info = this.$refs.seeksRelationGraph.getBoundingClientRect()
         if (window.SeeksGraphDebug) console.log('syncToolsPosition...')
-        // console.log('change layout:', __top, this.$refs.seeksRelationGraph.offsetHeight)
-        // console.log(_box_info.top, this.viewOffset.positionTop, (this.viewOffset.windowHeight - this.viewOffset.top))
         var __top = _box_info.top
         if (this.isNeedFixedTools === false) {
           if ((__top + this.$refs.seeksRelationGraph.offsetHeight) < 0) {
@@ -901,9 +800,6 @@
       addEventClick() {
         // window.addEventListener('click', this.graphOnClick)
       },
-      // graphOnClick(evt) {
-      //   console.log('click graph')
-      // },
       wow() {
         if (window.SeeksGraphDebug) console.log('wow.....')
         this.graphSetting.canvasOffset.x = this.graphSetting.canvasOffset.x + 1
@@ -916,23 +812,11 @@
         if (this.onNodeClick) {
           this.onNodeClick(nodeData, e)
         }
-        // for (let i = 0; i < this.lineViewList.length; i++) {
-        //   var thisLine = this.lineViewList[i]
-        //   if (thisLine.fromNode.id === nodeData.id || thisLine.toNode.id === nodeData.id) {
-        //     thisLine.flash = thisLine.flash + 1
-        //   }
-        // }
       },
       onRGLineClick(lineData, e) {
         if (this.onLineClick) {
           this.onLineClick(lineData, e)
         }
-        // for (let i = 0; i < this.lineViewList.length; i++) {
-        //   var thisLine = this.lineViewList[i]
-        //   if (thisLine.fromNode.id === nodeData.id || thisLine.toNode.id === nodeData.id) {
-        //     thisLine.flash = thisLine.flash + 1
-        //   }
-        // }
       },
       getNodeById(nodeId) {
         for (let i = 0; i < this.nodeViewList.length; i++) {
@@ -991,12 +875,6 @@
         if (this.beforeDownloadImage) {
           this.beforeDownloadImage()
         }
-        // console.log('window.navigator.msSaveOrOpenBlob:', window.navigator.msSaveOrOpenBlob)
-        // console.log('window.navigator.msSaveBlob：', window.navigator.msSaveBlob)
-        // if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-        //   this.$message('无法生成并下载图片，请使用非IE浏览器!')
-        //   return
-        // }
         if (this.nodeViewList.length === 0) {
           throw Error('没有节点，没有内容需要导出！')
         }
@@ -1050,10 +928,6 @@
           canvas_left: exportDom.getBoundingClientRect().left,
           canvas_top: exportDom.getBoundingClientRect().top,
         }
-        // exportDom.style.position ='absolute'
-        // exportDom.style.left ='0px'
-        // exportDom.style.top ='0px'
-        // exportDom.style.zIndex ='999'
         window.scrollTo(0,0);
         console.log('export image:', { relationGraphPosition, orign_width, orign_height, _image_width, _image_height, _min_x, _min_y, _max_x, _max_y, devicePixelRatio: window.devicePixelRatio })
         this.$nextTick(() => {
@@ -1089,22 +963,6 @@
             try {
               if (window.navigator.msSaveOrOpenBlob) {
                 window.navigator.msSaveOrOpenBlob(blob, fileName + '.' + format)
-                // console.log('this is IE');
-                // var URL=window.URL;
-                // var BlobBuilder = window.MSBlobBuilder;
-                // navigator.saveBlob=navigator.msSaveBlob;
-                // var imgBlob = canvas.msToBlob();
-                // if (BlobBuilder && navigator.saveBlob) {
-                //   var showSave =  function (data, name, mimetype) {
-                //     var builder = new BlobBuilder();
-                //     builder.append(data);
-                //     var blob = builder.getBlob(mimetype||"application/octet-stream");
-                //     if (!name)
-                //       name = "Download.bin";
-                //     navigator.saveBlob(blob, name);
-                //   };
-                //   showSave(imgBlob, 'barchart.png',"image/png");
-                // }
               } else {
                 a.setAttribute('href', URL.createObjectURL(blob))
                 a.setAttribute('download', fileName + '.' + format)

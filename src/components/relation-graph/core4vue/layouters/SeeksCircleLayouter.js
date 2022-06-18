@@ -27,7 +27,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     var __thisLevel_index = 0
     var __prev_node
     thisLevelNodes.forEach(thisNode => {
-      // console.log('Build node::', thisNode.name, thisNode.targetNodes.length)
       var __thisNode_child_size = 0
       if (thisNode.targetNodes) {
         thisNode.targetNodes.forEach(thisTarget => {
@@ -73,9 +72,7 @@ function SeeksCenterLayouter(layoutSetting, setting) {
       thisNode.lot.childs_size = __thisNode_child_size
       __thisLevel_index++
     })
-    // console.log('next level nodes:', newLevelNodes.length)
     if (newLevelNodes.length > 0) {
-      // console.log('thisLevelNodes.length:', thisLevelNodes, thisLevelNodes.length)
       this.checkMaxDeepAndLength(newLevelNodes, thisDeep + 1)
     }
   }
@@ -95,7 +92,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     this.__origin_nodes = allNodes
     this.rootNode = rootNode
     allNodes.forEach(thisNode => {
-      // thisNode.lot = { eached: false }
       thisNode.lot.eached = false
       thisNode.lot.notLeafNode = false
       thisNode.lot.childs = []
@@ -109,16 +105,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     console.log('max before:', this.__max_deep, this.__max_length)
     this.checkMaxDeepAndLength([this.rootNode], 0)
     console.log('max after:', this.__max_deep, this.__max_length)
-    // if (this.setting.heightByContent) {
-    //   console.log('根据内容调整高度')
-    //   var __suitableHeight = this.__max_length * 40 + 100
-    //   if (__suitableHeight > this.setting.viewSize.height) {
-    //     this.setting.viewSize.height = __suitableHeight
-    //   }
-    //   if (setting.viewSize.height > this.setting.canvasSize.height / 2) {
-    //     this.setting.canvasSize.height = this.setting.viewSize.height * 2
-    //   }
-    // }
     this.setting.canvasSize.width = 4000
     this.setting.canvasSize.height = 4000
     if (this.setting.heightByContent) {
@@ -130,19 +116,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     var __mapHeight = this.setting.viewSize.height
     var __offsetX = this.setting.canvasOffset.x
     var __offsetY = this.setting.canvasOffset.y
-    // var __per_width = parseInt((__mapWidth - 10) / (this.__max_deep + 2))
-    // var __per_height = parseInt((__mapHeight - 10) / (this.__max_length + 1))
-    // console.log('per:', __per_width, __per_height)
-    // var __level2_current_length = 0
-    // this.allNodes.forEach(thisNode => {
-    //   if (thisNode.lot.subling.level === 1 && thisNode.lot.childs_size > 0) {
-    //     __level2_current_length += thisNode.lot.childs_size
-    //     var __thisNodeLength = __level2_current_length + parseInt((thisNode.lot.childs_size / 2).toFixed(0))
-    //     thisNode.lot.strength_plus = __level2_current_length
-    //     console.log('level2 parents:', thisNode.name, thisNode.lot.childs_size, { strength_plus: thisNode.lot.strength_plus, __thisNodeLength, strength: thisNode.lot.childs_size, __level2_current_length })
-    //   }
-    // })
-    // var __currentLevel = 0
     var __center = {
       x: (__mapWidth) / 2 - __offsetX,
       y: (__mapHeight) / 2 - __offsetY
@@ -158,28 +131,8 @@ function SeeksCenterLayouter(layoutSetting, setting) {
       const _point = SeeksGraphMath.getOvalPoint(__center.x, __center.y, __circle_r, _index, __all_size)
       thisNode.x = _point.x
       thisNode.y = _point.y
-      // console.log('Place node:', thisNode.name, thisNode.x, thisNode.y)
-      // thisNode.name = (thisNode.lp_level_index + 1) + '/' + subling_size
     })
-    // this.allNodes.forEach(thisNode => {
-    //   if (thisNode.lot.subling.level === 1 && thisNode.lot.childs_size > 0) {
-    //     var _c_first = thisNode.lot.childs[0]
-    //     var _c_last = thisNode.lot.childs[thisNode.lot.childs.length - 1]
-    //     var _new_y = parseInt((_c_first.y + _c_last.y) / 2)
-    //     thisNode.y = _new_y
-    //   }
-    // })
-    // this.adjustLevel2Y(__mapHeight)
     console.log('Start Auto Layout.....')
-    // this.autoLayout(true)
-    // console.log('layout from root:', this.__max_deep, this.__max_length)
-    // rootNode.x = (this.setting.canvasSize.width - this.setting.nodeSize.width) / 2
-    // rootNode.y = (this.setting.canvasSize.height - this.setting.nodeSize.height) / 2
-    // rootNode.placed = true
-    // // rootNode.name = rootNode.x + ',' + rootNode.y
-    // var newLevelNodes = []
-    // newLevelNodes.push(rootNode)
-    // this.setPlace(newLevelNodes, 0, rootNode)
   }
   this.adjustLevel2Y = function(__mapHeight) {
     for (let i = 0; i < this.allNodes.length; i++) {
@@ -194,9 +147,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
             var __y_diff = Math.abs(thisNode.y - thisLevel2Node.y)
             if (__y_diff < __per_height - 2) {
               console.log('__y_diff', thisNode.name, thisLevel2Node.name, __y_diff)
-              // if (thisLevel2Node.lot.childs_size > 0 && i > 0) {
-              //   thisLevel2Node.y = this.allNodes[i - 1].y + __per_height
-              // }
               thisNode.y = thisLevel2Node.y + __per_height
               i--
               break
@@ -207,7 +157,6 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     }
   }
   this.layoutTimes = 0
-  // var ___this = this
   this.autoLayout = function(forceLayout) {
     if (forceLayout) {
       this.layoutTimes = 0
@@ -230,9 +179,7 @@ function SeeksCenterLayouter(layoutSetting, setting) {
         for (var j in this.allNodes) {
           // 循环点，计算i点与j点点斥力及方向
           if (i !== j) {
-            // if (this.allNodes[i].lot.subling.level === this.allNodes[j].lot.subling.level) {
             this.addGravityByNode(this.allNodes[i], this.allNodes[j])
-            // }
           }
         }
       }
@@ -278,27 +225,17 @@ function SeeksCenterLayouter(layoutSetting, setting) {
     node.Fy += y
   }
   this.applyToNodePosition = function(node) {
-    // if (!node.lot.childs || node.lot.childs.length === 0) {
-    //   return
-    // }
     if (this.rootNode === node) {
       return
     }
-    // console.log('F add:', node.name, node.Fx, node.Fy)
     if (node.Fx > 1000)node.Fx = 3000
     if (node.Fy > 1000)node.Fy = 3000
     if (node.Fx < -1000)node.Fx = -3000
     if (node.Fy < -1000)node.Fy = -3000
     const __buff_x = parseInt(node.Fx * 0.02)
     const __buff_y = parseInt(node.Fy * 0.02)
-    // console.log('F add:2:', node.name, __buff_x, __buff_y)
     node.x = node.x + __buff_x
     node.y = node.y + __buff_y
-    // node.name = __buff_x + ',' + __buff_y
-    // if (node.id === '8') {
-    //   console.log(node.id, __buff_x, __buff_y)
-    // // console.log(node.x, node.y)
-    // }
     node.Fx = 0
     node.Fy = 0
   }

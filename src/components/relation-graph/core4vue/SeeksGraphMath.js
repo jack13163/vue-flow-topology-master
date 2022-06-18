@@ -28,14 +28,6 @@ var SeeksGraphMath = {
     var fy = y1 + n1h / 2
     var tx = x2 + n2w / 2
     var ty = y2 + n2h / 2
-    // var x = fx - tx
-    // var y = fy - ty
-    // var z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
-    // var cos = y / z
-    // var radina = Math.acos(cos)// 用反三角函数求弧度
-    // var angle = Math.floor(180 / (Math.PI / radina))// 将弧度转换成角度
-    // n1h = n1h + 10
-    // n1w = n1w + 10
 
     var __tanA = ty === fy ? 0 : (tx - fx) / (ty - fy)
     if (__tanA === 0)__tanA = (tx - fx) / (ty - fy + 1)
@@ -43,7 +35,6 @@ var SeeksGraphMath = {
     var __w = 0
     var __h = 0
     var _case = '1'
-    // var __A_angle = Math.atan(__tanA) / (Math.PI / 180)
     if ((-1 * rectAngle) < __tanA && __tanA < rectAngle) {
       _case = '2'
       if (fy < ty) {
@@ -63,9 +54,6 @@ var SeeksGraphMath = {
       }
       _case = '3'
     }
-    // var __w = (n1h / 2) * Math.tan(__A_angle)
-    // var __w = ty === fy ? parseInt(n1w / 2) : parseInt(((n1h / 2) * (tx - fx)) / (ty - fy))
-    // var __h = tx === fx ? parseInt(n1h / 2) : parseInt((__w * (ty - fy)) / (tx - fx))
     return { x: fx + __w, y: fy + __h, _case }
   },
   getRectJoinPoint: function(x1, y1, x2, y2, n1w, n1h, n2w, n2h) {
@@ -131,21 +119,13 @@ var SeeksGraphMath = {
     }
     var buff_v = fy - ty
     var k = buff_v / buff_h
-    // var m = ty - tx * k
     var __x = Math.sqrt(1 / ((1 / Math.pow(n1w / 2, 2)) + (k ** 2 / Math.pow(n1h / 2, 2)))) * (fx < tx ? 1 : -1)
     var __y = k * __x
-    // this.c = Math.sqrt(this.h * this.h + this.s * this.s)
-    // // this.l = this.c - radius
-    // this.v = (this.c - n1w / 2) * this.h / this.c * -1
-    // this.t = (this.c - n1h / 2) * this.s / this.c * -1
-    // alert(this.h+","+this.s+","+this.c+","+this.l+","+this.v+","+this.t);
     return { x: tx - __x, y: ty - __y }
   },
   getCirclePoint4MultiLine: function(x1, y1, x2, y2, n1w, n1h, n2w, n2h, isReserve, allSize, indexOfAll) {
-    // console.log(indexOfAll, 'of', allSize, isReserve)
     if (isReserve) {
       indexOfAll = allSize - indexOfAll - 1
-      // console.log(indexOfAll, 'of', allSize, '|indexOfAll changed!')
     }
     var to_x = x2 + n2w / 2
     var to_y = y2 + n2h / 2
@@ -163,13 +143,7 @@ var SeeksGraphMath = {
     var n = n1h / 2
     var __wow = (to_x < from_x ? 1 : -1)
     var __x = (-1 * (m ** 2) * k * b + (m * n * Math.sqrt((n ** 2 + (k ** 2) * (m ** 2) - b ** 2), 2)) / __wow) / (n ** 2 + m ** 2 * k ** 2)
-    // var __x = Math.sqrt(1 / ((1 / Math.pow(n1w / 2, 2)) + (k ** 2 / Math.pow(n1h / 2, 2)))) * (to_x < from_x ? 1 : -1)
     var __y = k * __x + b
-    // this.c = Math.sqrt(this.h * this.h + this.s * this.s)
-    // // this.l = this.c - radius
-    // this.v = (this.c - n1w / 2) * this.h / this.c * -1
-    // this.t = (this.c - n1h / 2) * this.s / this.c * -1
-    // alert(this.h+","+this.s+","+this.c+","+this.l+","+this.v+","+this.t);
     return { x: from_x - __x, y: from_y - __y }
   },
   getCirclePointBasic: function(x1, y1, x2, y2, n1w, n1h, n2w, n2h, radius) {
@@ -183,7 +157,6 @@ var SeeksGraphMath = {
     this.l = this.c - radius
     this.v = this.l * this.h / this.c * -1
     this.t = this.l * this.s / this.c * -1
-    // alert(this.h+","+this.s+","+this.c+","+this.l+","+this.v+","+this.t);
     return { x: tx + this.v, y: ty + this.t }
   },
   getCirclePointPlus: function(x1, y1, x2, y2, n1w, n1h, n2w, n2h) {
@@ -194,10 +167,8 @@ var SeeksGraphMath = {
     this.h = tx - fx
     this.s = ty - fy
     this.c = Math.sqrt(this.h * this.h + this.s * this.s)
-    // this.l = this.c - radius
     this.v = (this.c - n1w / 2) * this.h / this.c * -1
     this.t = (this.c - n1h / 2) * this.s / this.c * -1
-    // alert(this.h+","+this.s+","+this.c+","+this.l+","+this.v+","+this.t);
     return { x: tx + this.v, y: ty + this.t }
   },
   getOvalPoint: function(c_x, c_y, c_r, c_i, c_n) {
@@ -233,9 +204,6 @@ var SeeksGraphMath = {
     if (Math.abs(tan) > 90) {
       tan = tan + 180
     }
-    // if (tan > 90 && tan < 270) {
-    //   tan = 0
-    // }
     return parseInt(tan)
   },
   getTreePointFromTop: function(c_x, c_y, c_height, c_i, c_n, sizehelper) {
@@ -321,15 +289,11 @@ var SeeksGraphMath = {
               thisTarget.lot.eached = true
               thisTarget.lot.parent = thisNode
               thisTarget.lot.index_of_parent = __thisTargetIndex++
-              // thisTarget.lot.prevNode = __prev_node
-              // if (__prev_node)__prev_node.lot.nextNode = thisTarget
-              // __prev_node = thisTarget
               thisNode.lot.childs.push(thisTarget)
               newLevelNodes.push(thisTarget)
               __thisNode_child_size++
             } else {
               thisNode.lot.childs.push(thisTarget)
-              // console.log('hide node:', thisTarget.name, 'from:', thisNode.text)
             }
           }
         })
@@ -344,9 +308,7 @@ var SeeksGraphMath = {
     if (__thisLOT_subling.all_strength > analyticResult.max_strength) {
       analyticResult.max_strength = __thisLOT_subling.all_strength
     }
-    // console.log(thisDeep, 'next level nodes:', newLevelNodes.length)
     if (newLevelNodes.length > 0) {
-      // console.log('thisLevelNodes.length:', thisLevelNodes, thisLevelNodes.length)
       this.analysisNodes(willLayoutNodes, newLevelNodes, thisDeep + 1, analyticResult, config)
     } else {
       willLayoutNodes.forEach(thisNode => {
@@ -361,9 +323,6 @@ var SeeksGraphMath = {
         }
       })
       this.analysisDataTree([willLayoutNodes[0]], 0)
-      // willLayoutNodes.forEach(thisNode => {
-      //   thisNode.text = thisNode.lot.strengthWithChilds_from + ':' + thisNode.lot.strengthWithChilds + '/' + thisNode.lot.strength
-      // })
     }
   },
   analysisNodes4Didirectional: function(willLayoutNodes, thisLevelNodes, thisDeep, analyticResult, levelDirect) {
@@ -391,7 +350,6 @@ var SeeksGraphMath = {
     thisLevelNodes.forEach(thisNode => {
       var __thisNode_child_size = 0
       if (levelDirect === 0) {
-        // console.log('Build node::from::', thisNode.name, thisNode.targetNodes.length)
         let __thisTargetIndex = 0
         thisNode.targetNodes.forEach((thisTarget) => {
           if (!thisTarget.lot)thisTarget.lot = { eached: false }
@@ -400,22 +358,17 @@ var SeeksGraphMath = {
               thisTarget.lot.eached = true
               thisTarget.lot.parent = thisNode
               thisTarget.lot.index_of_parent = __thisTargetIndex++
-              // thisTarget.lot.prevNode = __prev_node
-              // if (__prev_node)__prev_node.lot.nextNode = thisTarget
-              // __prev_node = thisTarget
               thisNode.lot.childs.push(thisTarget)
               newLevelNodes.push(thisTarget)
               __thisNode_child_size++
             } else {
               thisNode.lot.childs.push(thisTarget)
-              // console.log('hide node:', thisTarget.text, 'from:', thisNode.text)
             }
           } else {
             // console.log('solved node:', thisTarget.text, 'from:', thisNode.text)
           }
         })
       } else if (levelDirect === -1) {
-        // console.log('Build node::from::', thisNode.name, thisNode.targetFrom.length)
         let __thisTargetIndex = 0
         thisNode.targetFrom.forEach((thisTarget) => {
           if (!thisTarget.lot)thisTarget.lot = { eached: false }
@@ -424,20 +377,15 @@ var SeeksGraphMath = {
               thisTarget.lot.eached = true
               thisTarget.lot.parent = thisNode
               thisTarget.lot.index_of_parent = __thisTargetIndex++
-              // thisTarget.lot.prevNode = __prev_node
-              // if (__prev_node)__prev_node.lot.nextNode = thisTarget
-              // __prev_node = thisTarget
               thisNode.lot.childs.push(thisTarget)
               newLevelNodes.push(thisTarget)
               __thisNode_child_size++
             } else {
               thisNode.lot.childs.push(thisTarget)
-              // console.log('hide node:', thisTarget.name, 'from:', thisNode.text)
             }
           }
         })
       } else {
-        // console.log('Build node::to::', thisNode.name, thisNode.targetTo.length)
         let __thisTargetIndex = 0
         thisNode.targetTo.forEach((thisTarget) => {
           if (!thisTarget.lot)thisTarget.lot = { eached: false }
@@ -446,15 +394,11 @@ var SeeksGraphMath = {
               thisTarget.lot.eached = true
               thisTarget.lot.parent = thisNode
               thisTarget.lot.index_of_parent = __thisTargetIndex++
-              // thisTarget.lot.prevNode = __prev_node
-              // if (__prev_node)__prev_node.lot.nextNode = thisTarget
-              // __prev_node = thisTarget
               thisNode.lot.childs.push(thisTarget)
               newLevelNodes.push(thisTarget)
               __thisNode_child_size++
             } else {
               thisNode.lot.childs.push(thisTarget)
-              // console.log('hide node:', thisTarget.name, 'from:', thisNode.text)
             }
           }
         })
@@ -469,9 +413,7 @@ var SeeksGraphMath = {
     if (__thisLOT_subling.all_strength > analyticResult.max_strength) {
       analyticResult.max_strength = __thisLOT_subling.all_strength
     }
-    // console.log(thisDeep, 'next level nodes:', newLevelNodes.length)
     if (newLevelNodes.length > 0) {
-      // console.log('thisLevelNodes.length:', thisLevelNodes, thisLevelNodes.length)
       SeeksGraphMath.analysisNodes4Didirectional(willLayoutNodes, newLevelNodes, thisDeep + (levelDirect === -1 ? -1 : 1), analyticResult, levelDirect)
     } else {
       willLayoutNodes.forEach(thisNode => {
@@ -486,9 +428,6 @@ var SeeksGraphMath = {
         }
       })
       SeeksGraphMath.analysisDataTree([willLayoutNodes[0]], 0, levelDirect)
-      // willLayoutNodes.forEach(thisNode => {
-      //   thisNode.text = thisNode.lot.strengthWithChilds_from + ':' + thisNode.lot.strengthWithChilds + '/' + thisNode.lot.strength
-      // })
     }
   },
   conductStrengthToParents(node) {
@@ -502,7 +441,6 @@ var SeeksGraphMath = {
     var newLevelNodes = []
     var currentLevelStrengthWidthChilds = 0
     thisLevelNodes.forEach(thisNode => {
-      // console.log('Place node aaaaaa:', levelDirect, thisNode.text, (thisNode.lot.level < 0 ? -1 : 1))
       if (thisNode.lot.level === 0 || levelDirect === (thisNode.lot.level < 0 ? -1 : 1)) {
         if (thisNode.lot.childs_size > 0) {
           thisNode.lot.childs.forEach((thisTarget) => {
@@ -516,26 +454,12 @@ var SeeksGraphMath = {
         currentLevelStrengthWidthChilds += thisNode.lot.strengthWithChilds
       }
     })
-    // console.log(thisDeep, 'next level nodes:', newLevelNodes.length)
     if (newLevelNodes.length > 0) {
       this.analysisDataTree(newLevelNodes, thisDeep + levelDirect, levelDirect)
     }
   },
-  // conductStrengthToParents(node) {
-  //   if (node.lot.childs_size === 0) {
-  //     return 1
-  //   } else {
-  //     var _sum = 0
-  //     node.lot.childs.forEach(thisChild => {
-  //       thisChild.lot.strengthWithChilds = this.conductStrengthToParents(thisChild)
-  //       _sum += thisChild.lot.strengthWithChilds
-  //     })
-  //     return _sum
-  //   }
-  // },
   isAllowShowNode: function(thisNode) {
     const _r = thisNode.isShow !== false && thisNode.isHide !== true && (!thisNode.lot.parent || this.isAllowShowNode(thisNode.lot.parent, false) === true)
-    // if (derict !== false && _r === false) console.log('hide node by:', thisNode.isShow !== false, thisNode.isHide !== true)
     return _r
   }
 }
