@@ -111,7 +111,6 @@ export default {
   mounted() {
     this.jsonData = this.$store.state.flowData;
     this.resetViewSize()
-    console.log(this.jsonData)
   },
   methods: {
     onIsAddNode() {
@@ -163,10 +162,7 @@ export default {
       }
       this.loadGraphJsonData(jsonData)
       console.log('graphData:', this.graphData)
-      this.graphData.rootNode = jsonData.nodes[0]
-      if (!this.graphData.rootNode && this.graphData.nodes.length > 0) {
-        this.graphData.rootNode = this.graphData.nodes[0]
-      }
+      this.graphData.rootNode = this.graphData.nodes[0]
       this.applyNewDataToCanvas()
       if (this.graphSetting.layouter && this.graphData.rootNode) {
         console.log('需要布局的节点数量：', this.graphData.nodes.length)
@@ -187,18 +183,9 @@ export default {
           this.nodeViewList.push(thisNode)
         }
       })
-      this.graphData.lines.forEach(thisLine => {
-        if (thisLine.appended === false) {
-          thisLine.appended = true
-          this.lineViewList.push(thisLine)
-        }
-      })
-      if (!this.graphData.rootNode) {
-        this.graphData.rootNode = this.graphData.nodes[0]
-      }
-      if (this.graphSetting.defaultFocusRootNode) {
-        this.graphSetting.checkedNodeId = this.graphData.rootNode.id
-      }
+      this.graphData.nodes = this.nodeViewList
+      this.jsonData.nodes = this.nodeViewList
+      this.$store.state.flowData = this.nodeViewList
     },
     loadNodes(_nodes) {
       _nodes.forEach(thisNodeJson => {
@@ -219,8 +206,6 @@ export default {
     },
     loadGraphJsonData(jsonData) {
       // 兼容以前的配置
-      this.graphData.links = jsonData.links
-      this.graphData.nodes = jsonData.nodes
       var _nodes = []
       var _links = []
       this.flatNodeData(jsonData.nodes, null, _nodes, _links)
