@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import SeeksRelationGraph from '../index.js'
+import SeeksRelationGraph from '../SeeksRelationGraph.vue'
 export default {
   name: 'Demo',
   components: { SeeksRelationGraph },

@@ -7,9 +7,7 @@ import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import "./style/init.scss"
 import ElementUI from 'element-ui';
-import RelationGraph from './components/relation-graph/index.js';
 Vue.use(ElementUI);
-Vue.use(RelationGraph);
 
 import JsonViewer from 'vue-json-viewer'
 Vue.use(JsonViewer);
