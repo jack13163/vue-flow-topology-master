@@ -132,13 +132,15 @@ export default {
         };
         this.$store.commit("setFlowData", { offsetX, offsetY });
       } else if (newVal.type === "reset") {
-        //重置
+        // 重置
         // let { offsetX, offsetY } = flowConfig;
         // this.dragMove = {
         //   top: offsetY,
         //   left: offsetX,
         // };
         // this.$store.commit("setFlowData", flowConfig);
+      } else if (newVal.type === "autoLayout") {
+        this.$emit("on-select-type", "auto-layout");
       } else if (newVal.type === "save") {
         this.handleSave();
       } else if (newVal.type === "clear") {

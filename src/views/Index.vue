@@ -49,6 +49,7 @@ import HeaderAttr from "@/components/modules/HeaderAttr";
 import FlowMenu from "@/components/FlowMenu";
 import FlowAttr from "@/components/FlowAttr";
 import FlowContent from "@/components/FlowContent";
+
 export default {
   name: "Index",
   components: {
@@ -63,6 +64,21 @@ export default {
       isMouseDownStop: false,
       isJsonView: false,
       jsonData: "暂无内容",
+      graphOptions: {
+        defaultNodeBorderWidth: 0,
+        allowSwitchLineShape: true,
+        allowSwitchJunctionPoint: true,
+        defaultLineShape: 1,
+        'layouts': [
+          {
+            'label': '自动布局',
+            'layoutName': 'force',
+            'layoutClassName': 'seeks-layout-force'
+          }
+        ],
+        defaultJunctionPoint: 'border'
+        // 这里可以参考"Graph 图谱"中的参数进行设置
+      }
     };
   },
   computed: {
@@ -83,13 +99,18 @@ export default {
   },
   mounted() {
     this.jsonData = this.$store.state.flowData;
+    console.log(this.jsonData)
   },
   methods: {
     onIsAddNode() {
       this.$refs.flowContent.onIsAddNode();
     },
     onSelectType(type) {
-      this.$refs.operate.handleMiddleMenu(type);
+      if (type === "drag-drop") {
+        this.$refs.operate.handleMiddleMenu(type);
+      } else if (type === "auto-layout") {
+        console.log("自动布局...")
+      }
     },
     handleCloseJsonView() {
       //  this.jsonData = this.$store.state.flowData;
@@ -109,6 +130,39 @@ export default {
         }
       }
     },
+    // 自动布局相关逻辑
+    switchLayout(layoutConfig) {
+      if (window.SeeksGraphDebug) console.log('change layout:', layoutConfig)
+      SeeksRGLayouters.switchLayout(layoutConfig, this.graphSetting)
+      this.refresh()
+    },
+    toggleAutoLayout() {
+      this.graphSetting.autoLayouting = !this.graphSetting.autoLayouting
+      if (this.graphSetting.autoLayouting) {
+        if (!this.graphSetting.layouter.autoLayout) {
+          console.log('当前布局不支持自动布局！')
+        } else {
+          console.log('自动布局功能入口...')
+          this.graphSetting.layouter.autoLayout(true)
+        }
+      } else {
+        if (!this.graphSetting.layouter.stop) {
+          console.log('当前布局不支持自动布局stop！')
+        } else {
+          this.graphSetting.layouter.stop()
+        }
+      }
+    },
+    printGraphJsonData() {
+      this.hits++
+      setTimeout(() => {
+        if (this.hits > 0) this.hits--
+      }, 2000)
+      if (this.hits > 5) {
+        this.hits = 0
+        this.$parent.printGraphJsonData()
+      }
+    }
   },
 };
 </script>

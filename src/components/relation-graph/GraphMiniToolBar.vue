@@ -9,7 +9,6 @@
       <span class="c-mb-text">放大</span>
     </div>
     <div v-if="graphSetting.allowShowZoomMenu" style="float:left;margin-top:0px;height:20px;width:40px;border-top:0px;border-bottom:0px;background-color: #ffffff;color: #262626;font-size: 10px;background-color: #efefef;text-align: center;line-height: 20px;" @click="printGraphJsonData">{{ graphSetting.canvasZoom }}%</div>
-    <!--<div style="float:left;margin-top:0px;height:20px;width:40px;border-top:0px;border-bottom:0px;background-color: #ffffff;color: #262626;font-size: 10px;background-color: #efefef;text-align: center;line-height: 20px;">{{ hits }}</div>-->
     <div v-if="graphSetting.allowShowZoomMenu" class="c-mb-button" style="margin-top:0px;" @click="$parent.zoom(-20)">
       <svg class="rg-icon" aria-hidden="true"><use xlink:href="#icon-suoxiao"></use></svg>
       <span class="c-mb-text">缩小</span>
@@ -120,13 +119,6 @@ export default {
       downloadPanelWidth: 106
     }
   },
-  // watch: {
-  //   'graphSetting.layoutName': function(newV, oldV) {
-  //     console.log('change layout:', newV, oldV)
-  //     SeeksRGLayouters.switchLayout(newV, this.graphSetting)
-  //     this.refresh()
-  //   }
-  // },
   mounted() {
     if (this.$parent.onDownloadExcel !== null) {
       this.downloadPanelWidth += 50
@@ -145,7 +137,6 @@ export default {
       this.refresh()
     },
     toggleAutoLayout() {
-      // console.log('this.graphSetting.autoLayouting', this.graphSetting.autoLayouting)
       this.graphSetting.autoLayouting = !this.graphSetting.autoLayouting
       if (this.graphSetting.autoLayouting) {
         if (!this.graphSetting.layouter.autoLayout) {

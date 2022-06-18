@@ -98,6 +98,14 @@
         </Tooltip>
       </li>
       <li
+        @click.stop="handleMiddleMenu('autoLayout')"
+        :class="[middleSelectType === 'autoLayout' ? 'active' : '']"
+      >
+        <Tooltip content="自动布局" placement="bottom">
+          <Icon type="md-refresh" />
+        </Tooltip>
+      </li>
+      <li
         @click.stop="handleMiddleMenu('save')"
         :class="[middleSelectType === 'save' ? 'active' : '']"
       >
