@@ -146,7 +146,7 @@ export default {
         this.graphSetting.viewSize.width = this.$refs.flowContent.$el.getBoundingClientRect().width * 10
         this.graphSetting.viewSize.height = this.$refs.flowContent.$el.getBoundingClientRect().height * 10
         this.graphSetting.canvasZoom = 100
-        this.graphData = this.$store.state.flowData;
+        Object.assign(this.graphData, this.$store.state.flowData)
         console.log('graphData:', this.graphData)
         this.viewSizeIsInited = true
         if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
@@ -157,10 +157,6 @@ export default {
         }
         this.loadGraphJsonData(this.graphData)
         this.graphData.rootNode = this.graphData.nodes[0]
-        Object.assign(this.graphData.rootNode, { el: {
-          offsetWidth: 100,
-          offsetHeight: 50
-        }})
         // this.$store.commit("setFlowData", this.graphData);
         if (this.graphSetting.layouter && this.graphData.rootNode) {
           console.log('需要布局的节点数量：', this.graphData.nodes.length)
@@ -173,7 +169,117 @@ export default {
       var _nodes = []
       var _links = []
       this.flatNodeData(this.graphData.nodes, null, _nodes, _links)
-      console.log('节点预处理完毕')
+      this.loadNodes(_nodes)
+      this.loadLinks(_links)
+      console.log('节点和连接信息预处理完毕')
+    },
+    loadNodes(_nodes) {
+      let result = []
+      _nodes.forEach(thisNodeJson => {
+        let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
+        let __isNew = false
+        console.log(this.graphData)
+        if (this.graphData.nodes_map[thisNode.id]) {
+          thisNode = this.graphData.nodes_map[thisNode.id]
+        } else {
+          __isNew = true
+        }
+        if (__isNew) {
+          this.graphData.nodes_map[thisNode.id] = thisNode
+          result.push(thisNode)
+          thisNode.seeks_id = this.seeksNodeIdIndex++
+          thisNode.appended = false
+        }
+      })
+      this.graphData.nodes = result
+    },
+    loadLinks(_links) {
+      let result = []
+      _links.forEach(thisLinkJson => {
+        let __isNew = false
+        var __from
+        var __to
+        if (typeof thisLinkJson.from === 'object') {
+          __from = thisLinkJson.from
+        } else {
+          __from = this.graphData.nodes_map[thisLinkJson.from]
+        }
+        if (typeof thisLinkJson.to === 'object') {
+          __to = thisLinkJson.to
+        } else {
+          __to = this.graphData.nodes_map[thisLinkJson.to]
+        }
+        if (!__from) {
+          console.error('找不到from:', thisLinkJson)
+          return
+        }
+        if (!__to) {
+          console.error('找不到to:', thisLinkJson)
+          return
+        }
+        const lineId1 = __from.seeks_id + '-' + __to.seeks_id
+        const lineId2 = __to.seeks_id + '-' + __from.seeks_id
+        var thisLink = SeeksRGUtils.json2Link(thisLinkJson)
+        var thisLine
+        var thisLinkIsReserve = false
+        if (this.graphData.lines_map[lineId1]) {
+          thisLine = this.graphData.lines_map[lineId1]
+        } else {
+          if (this.graphData.lines_map[lineId2]) {
+            thisLine = this.graphData.lines_map[lineId2]
+            thisLinkIsReserve = true
+          } else {
+            __isNew = true
+            thisLine = {
+              seeks_id: lineId1,
+              fromNode: __from,
+              toNode: __to,
+              appended: false,
+              relations: []
+            }
+          }
+        }
+        var _arrow = thisLink.arrow
+        if (thisLink.isHideArrow) {
+          // do nothing
+        } else {
+          _arrow = this.getLineArrow(thisLink.color)
+        }
+        if (!__from.targetNodes)__from.targetNodes = []
+        if (!__to.targetNodes)__to.targetNodes = []
+        if (__from.targetNodes.indexOf(__to) === -1) {
+          __from.targetNodes.push(__to)
+        }
+        if (__to.targetNodes.indexOf(__from) === -1) {
+          __to.targetNodes.push(__from)
+        }
+        if (__from.targetTo.indexOf(__to) === -1) {
+          __from.targetTo.push(__to)
+        }
+        if (__to.targetFrom.indexOf(__from) === -1) {
+          __to.targetFrom.push(__from)
+        }
+        var isDuplicate = false
+        for (var i = 0; i < thisLine.relations.length; i++) {
+          if (thisLine.relations[i].id === thisLink.id) {
+            isDuplicate = true
+            break
+          }
+        }
+        if (isDuplicate === false) {
+          if (!thisLink.id) thisLink.id = thisLine.seeks_id + '-' + thisLine.relations.length
+          thisLink.isReverse = thisLinkIsReserve
+          thisLink.arrow = _arrow
+          thisLink.textPositon = { x: 0, y: 0 }
+          thisLine.relations.push(thisLink)
+        }
+        if (__isNew) {
+          this.graphData.lines_map[lineId1] = thisLine
+          result.push(thisLine)
+          thisLine.appended = false
+        }
+      })
+      this.graphData.lines = result
     },
     flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect) {
       orign_nodes.forEach(thisOrignNode => {
