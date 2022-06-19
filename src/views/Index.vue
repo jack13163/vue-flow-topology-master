@@ -182,7 +182,13 @@ export default {
       let result = []
       _nodes.forEach(thisNodeJson => {
         let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
-        if (!this.graphData.nodes_map[thisNode.id]) {
+        let __isNew = false
+        if (this.graphData.nodes_map[thisNode.id]) {
+          thisNode = this.graphData.nodes_map[thisNode.id]
+        } else {
+          __isNew = true
+        }
+        if (__isNew) {
           thisNode.seeks_id = this.seeksNodeIdIndex++
           thisNode.appended = false
           this.graphData.nodes_map[thisNode.id] = thisNode
@@ -267,7 +273,6 @@ export default {
       orign_nodes.forEach(thisOrignNode => {
         if (!thisOrignNode.flated) {
           thisOrignNode.flated = true
-          thisOrignNode.lot = {}
           nodes_collect.push(thisOrignNode)
           if (parentNode) {
             links_collect.push({
