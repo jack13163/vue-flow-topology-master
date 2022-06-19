@@ -65,6 +65,7 @@ export default {
     return {
       isMouseDownStop: false,
       isJsonView: false,
+      seeksNodeIdIndex: 1,
       graphSetting: {
         defaultNodeBorderWidth: 0,
         allowSwitchLineShape: true,
@@ -168,47 +169,34 @@ export default {
       // 兼容以前的配置
       var _nodes = []
       var _links = []
-      this.flatNodeData(this.graphData.nodes, null, _nodes, _links)
-      this.loadNodes(_nodes)
-      this.loadLinks(_links)
+      let _map = []
+      this.graphData.nodes.forEach(node => {
+        _map[node.id] = node
+      })
+      this.flatNodeData(this.graphData.nodes, null, _nodes, _links, _map)
+      this.graphData.nodes = this.loadNodes(_nodes)
+      this.graphData.lines = this.loadLinks(_links)
       console.log('节点和连接信息预处理完毕')
     },
     loadNodes(_nodes) {
       let result = []
       _nodes.forEach(thisNodeJson => {
         let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
-        let __isNew = false
-        console.log(this.graphData)
-        if (this.graphData.nodes_map[thisNode.id]) {
-          thisNode = this.graphData.nodes_map[thisNode.id]
-        } else {
-          __isNew = true
-        }
-        if (__isNew) {
-          this.graphData.nodes_map[thisNode.id] = thisNode
-          result.push(thisNode)
+        if (!this.graphData.nodes_map[thisNode.id]) {
           thisNode.seeks_id = this.seeksNodeIdIndex++
           thisNode.appended = false
+          this.graphData.nodes_map[thisNode.id] = thisNode
+          result.push(thisNode)
         }
       })
-      this.graphData.nodes = result
+      return result
     },
     loadLinks(_links) {
       let result = []
       _links.forEach(thisLinkJson => {
         let __isNew = false
-        var __from
-        var __to
-        if (typeof thisLinkJson.from === 'object') {
-          __from = thisLinkJson.from
-        } else {
-          __from = this.graphData.nodes_map[thisLinkJson.from]
-        }
-        if (typeof thisLinkJson.to === 'object') {
-          __to = thisLinkJson.to
-        } else {
-          __to = this.graphData.nodes_map[thisLinkJson.to]
-        }
+        let __from = this.graphData.nodes_map[thisLinkJson.from]
+        let __to = this.graphData.nodes_map[thisLinkJson.to]
         if (!__from) {
           console.error('找不到from:', thisLinkJson)
           return
@@ -239,12 +227,6 @@ export default {
             }
           }
         }
-        var _arrow = thisLink.arrow
-        if (thisLink.isHideArrow) {
-          // do nothing
-        } else {
-          _arrow = this.getLineArrow(thisLink.color)
-        }
         if (!__from.targetNodes)__from.targetNodes = []
         if (!__to.targetNodes)__to.targetNodes = []
         if (__from.targetNodes.indexOf(__to) === -1) {
@@ -269,7 +251,7 @@ export default {
         if (isDuplicate === false) {
           if (!thisLink.id) thisLink.id = thisLine.seeks_id + '-' + thisLine.relations.length
           thisLink.isReverse = thisLinkIsReserve
-          thisLink.arrow = _arrow
+          thisLink.arrow = null
           thisLink.textPositon = { x: 0, y: 0 }
           thisLine.relations.push(thisLink)
         }
@@ -279,9 +261,9 @@ export default {
           thisLine.appended = false
         }
       })
-      this.graphData.lines = result
+      return result
     },
-    flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect) {
+    flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect, _map) {
       orign_nodes.forEach(thisOrignNode => {
         if (!thisOrignNode.flated) {
           thisOrignNode.flated = true
@@ -293,10 +275,20 @@ export default {
               to: thisOrignNode.id,
             })
           }
+          // 根据输入的数据进行预处理
           var _childs = thisOrignNode.childs || thisOrignNode.children
+          if (!_childs) {
+            _childs = []
+            this.graphData.links.forEach(link => {
+              if (link.sourceId === thisOrignNode.id) {
+                let targetNode = _map[link.targetId]
+                _childs.push(targetNode)
+              }
+            })
+          }
           if (_childs && _childs.length > 0) {
             thisOrignNode.targetNodes = _childs
-            this.flatNodeData(_childs, thisOrignNode, nodes_collect, links_collect)
+            this.flatNodeData(_childs, thisOrignNode, nodes_collect, links_collect, _map)
           } else {
             thisOrignNode.targetNodes = []
           }
