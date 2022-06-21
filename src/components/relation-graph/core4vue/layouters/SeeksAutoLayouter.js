@@ -78,7 +78,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     if (forceLayout) {
       this.layoutTimes = 0
     }
-    if (window.SeeksGraphDebug) console.log('this.layoutTimes:', this.layoutTimes)
+    console.log('this.layoutTimes:', this.layoutTimes)
     if (this.layoutTimes > 300) {
       this.graphSetting.autoLayouting = false
       return
@@ -174,6 +174,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     node.y = node.y + __buff_y
     node.Fx = 0
     node.Fy = 0
+    console.log(node.text + ': [' + node.x + ',' + node.y + ']')
   }
 }
 

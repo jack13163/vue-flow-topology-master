@@ -66,6 +66,7 @@ export default {
       isMouseDownStop: false,
       isJsonView: false,
       seeksNodeIdIndex: 1,
+      jspInstance: null,
       graphSetting: {
         defaultNodeBorderWidth: 0,
         allowSwitchLineShape: true,
@@ -178,7 +179,7 @@ export default {
       })
       this.flatNodeData(this.graphData.nodes, null, _nodes, _links, _map)
       this.graphData.nodes = this.loadNodes(_nodes)
-      this.graphData.lines = this.loadLinks(_links)
+      // this.graphData.lines = this.loadLinks(_links)
       console.log('节点和连接信息预处理完毕')
     },
     loadNodes(_nodes) {
