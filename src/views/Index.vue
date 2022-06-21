@@ -107,7 +107,8 @@ export default {
     },
   },
   created() {
-    this.$store.commit("setJspInit", jsp.jsPlumb.getInstance({ Container: "zll-index" }));
+    this.jspInstance = jsp.jsPlumb.getInstance({ Container: "zll-index" });
+    this.$store.commit("setJspInit", this.jspInstance);
   },
   mounted() {
     this.init()
@@ -160,6 +161,8 @@ export default {
           _defaultLayoutSetting.callback = (nodes) => {
             // 回调，更新
             this.$store.commit('setFlowData', { method: 'update-all-nodes', nodes: nodes});
+            this.jspInstance.repaintEverything();
+            this.$store.state.jspInit.repaintEverything()
           }
           this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
         } else {
