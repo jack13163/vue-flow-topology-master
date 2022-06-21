@@ -166,6 +166,14 @@ export default {
         this.$refs.flowArea.initFlowCanvas();
       });
     },
+    updateCanvas() {
+      this.dragMove = {
+        top: offsetY,
+        left: offsetX,
+      };
+      this.$store.commit("setFlowData", flowConfig);
+      this.$refs.flowArea.initFlowCanvas();
+    },
     // 拖拽鼠标抬起事件（添加节点）
     onIsAddNode() {
       if (this.$store.state.newNode.state) {
@@ -331,7 +339,7 @@ export default {
   beforeDestroy() {
     this.$store.commit("setFlowStepData");
     this.$Message.destroy();
-  },
+  }
 };
 </script>
 <style scoped lang="scss">

@@ -176,6 +176,7 @@ let storeData = {
           id: node.id,
           name: node.name,
           type: node.type,
+          text: node.text,
           x: node.x,
           y: node.y
         })
