@@ -157,15 +157,17 @@ export default {
         this.viewSizeIsInited = true
         if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
           var _defaultLayoutSetting = this.graphSetting.layouts[0]
+          _defaultLayoutSetting.callback = (nodes) => {
+            // 回调，更新
+            this.$store.commit('setFlowData', { method: 'update-all-nodes', nodes: nodes});
+          }
           this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
         } else {
           console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
         }
         this.loadGraphJsonData(this.graphData)
-        this.graphData.rootNode = this.graphData.nodes[0]
-        if (this.graphSetting.layouter && this.graphData.rootNode) {
-          console.log('需要布局的节点数量：', this.graphData.nodes.length)
-          this.graphSetting.layouter.placeNodes(this.graphData.nodes, this.graphData.rootNode, this.graphSetting)
+        if (this.graphSetting.layouter) {
+          this.graphSetting.layouter.placeNodes(this.graphData.nodes)
         }
       })
     },

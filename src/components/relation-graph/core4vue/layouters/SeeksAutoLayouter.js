@@ -10,12 +10,11 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     this.placeNodes(this.__origin_nodes, this.rootNode)
   }
   this.placeNodes = function(allNodes, rootNode) {
+    if (!allNodes ||  allNodes.length === 0) return;
     if (!rootNode) {
-      console.log('root is null:', rootNode)
-      return
-    } else {
-      if (window.SeeksGraphDebug) console.log('layout by root:', rootNode)
+      rootNode = allNodes[0]
     }
+    console.log('layout by root:', rootNode)
     this.__origin_nodes = allNodes
     this.rootNode = rootNode
     allNodes.forEach(thisNode => {
@@ -48,7 +47,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
       thisNode.y = thisNode.lot.y
       thisNode.lot.placed = true
     })
-    if (window.SeeksGraphDebug) console.log('Start Auto Layout.....')
+    console.log('Start Auto Layout.....')
     this.autoLayout(true)
   }
   this.placeRelativePosition = function(rootNode) {
@@ -78,7 +77,6 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     if (forceLayout) {
       this.layoutTimes = 0
     }
-    console.log('this.layoutTimes:', this.layoutTimes)
     if (this.layoutTimes > 300) {
       this.graphSetting.autoLayouting = false
       return
@@ -117,6 +115,11 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     }
     for (const i in this.__origin_nodes) {
       this.applyToNodePosition(this.__origin_nodes[i])
+    }
+    // 更新状态
+    if (this.config.callback && typeof this.config.callback === 'function') {
+      console.log('this.layoutTimes:', this.layoutTimes)
+      this.config.callback(this.__origin_nodes)
     }
     window.setTimeout(function() { this.autoLayout() }.bind(this), 30)
   }
@@ -174,7 +177,6 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     node.y = node.y + __buff_y
     node.Fx = 0
     node.Fy = 0
-    console.log(node.text + ': [' + node.x + ',' + node.y + ']')
   }
 }
 

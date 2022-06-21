@@ -122,13 +122,16 @@ let storeData = {
           state.flowStepData = [];
           state.stepIndex = 0;
           storeData.mutations.setFlowStepData(state, state.flowData);
+        } else if (data.method === "update-all-nodes") {
+          state.flowData.nodes = data.nodes;
+          storeData.mutations.setFlowStepData(state, state.flowData);
         }
       } else {
         state.flowData = { ...state.flowData, ...data };
       }
 
       sessionStorage.setItem("flowData", JSON.stringify(state.flowData));
-      console.log(state.flowData);
+      console.log(state.method + ': ' + state.flowData);
     },
     setFlowMenuObj(state, data) {
       state.flowMenuObj = {
