@@ -167,11 +167,11 @@ export default {
       });
     },
     updateCanvas() {
+      let { offsetX, offsetY } = flowConfig;
       this.dragMove = {
         top: offsetY,
         left: offsetX,
       };
-      this.$store.commit("setFlowData", flowConfig);
       this.$refs.flowArea.initFlowCanvas();
     },
     // 拖拽鼠标抬起事件（添加节点）
