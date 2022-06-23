@@ -165,7 +165,7 @@ export default {
         }
         this.loadGraphJsonData(this.graphData)
         if (this.graphSetting.layouter) {
-          this.graphSetting.layouter.placeNodes(this.graphData.nodes)
+          // this.graphSetting.layouter.placeNodes(this.graphData.nodes)
         }
       })
     },
@@ -212,78 +212,6 @@ export default {
       })
       return result
     },
-    loadLinks(_links) {
-      let result = []
-      _links.forEach(thisLinkJson => {
-        let __isNew = false
-        let __from = this.graphData.nodes_map[thisLinkJson.from]
-        let __to = this.graphData.nodes_map[thisLinkJson.to]
-        if (!__from) {
-          console.error('找不到from:', thisLinkJson)
-          return
-        }
-        if (!__to) {
-          console.error('找不到to:', thisLinkJson)
-          return
-        }
-        const lineId1 = __from.seeks_id + '-' + __to.seeks_id
-        const lineId2 = __to.seeks_id + '-' + __from.seeks_id
-        var thisLink = SeeksRGUtils.json2Link(thisLinkJson)
-        var thisLine
-        var thisLinkIsReserve = false
-        if (this.graphData.lines_map[lineId1]) {
-          thisLine = this.graphData.lines_map[lineId1]
-        } else {
-          if (this.graphData.lines_map[lineId2]) {
-            thisLine = this.graphData.lines_map[lineId2]
-            thisLinkIsReserve = true
-          } else {
-            __isNew = true
-            thisLine = {
-              seeks_id: lineId1,
-              fromNode: __from,
-              toNode: __to,
-              appended: false,
-              relations: []
-            }
-          }
-        }
-        if (!__from.targetNodes)__from.targetNodes = []
-        if (!__to.targetNodes)__to.targetNodes = []
-        if (__from.targetNodes.indexOf(__to) === -1) {
-          __from.targetNodes.push(__to)
-        }
-        if (__to.targetNodes.indexOf(__from) === -1) {
-          __to.targetNodes.push(__from)
-        }
-        if (__from.targetTo.indexOf(__to) === -1) {
-          __from.targetTo.push(__to)
-        }
-        if (__to.targetFrom.indexOf(__from) === -1) {
-          __to.targetFrom.push(__from)
-        }
-        var isDuplicate = false
-        for (var i = 0; i < thisLine.relations.length; i++) {
-          if (thisLine.relations[i].id === thisLink.id) {
-            isDuplicate = true
-            break
-          }
-        }
-        if (isDuplicate === false) {
-          if (!thisLink.id) thisLink.id = thisLine.seeks_id + '-' + thisLine.relations.length
-          thisLink.isReverse = thisLinkIsReserve
-          thisLink.arrow = null
-          thisLink.textPositon = { x: 0, y: 0 }
-          thisLine.relations.push(thisLink)
-        }
-        if (__isNew) {
-          this.graphData.lines_map[lineId1] = thisLine
-          result.push(thisLine)
-          thisLine.appended = false
-        }
-      })
-      return result
-    },
     flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect, _map) {
       orign_nodes.forEach(thisOrignNode => {
         if (!thisOrignNode.flated) {
@@ -316,21 +244,22 @@ export default {
       })
     },
     toggleAutoLayout() {
-      this.graphSetting.autoLayouting = !this.graphSetting.autoLayouting
-      if (this.graphSetting.autoLayouting) {
-        if (!this.graphSetting.layouter.autoLayout) {
-          console.log('当前布局不支持自动布局！')
-        } else {
-          console.log('自动布局功能入口...')
-          this.graphSetting.layouter.autoLayout(true)
-        }
-      } else {
-        if (!this.graphSetting.layouter.stop) {
-          console.log('当前布局不支持自动布局stop！')
-        } else {
-          this.graphSetting.layouter.stop()
-        }
-      }
+      this.graphSetting.layouter.placeNodes(this.graphData.nodes)
+      // this.graphSetting.autoLayouting = !this.graphSetting.autoLayouting
+      // if (this.graphSetting.autoLayouting) {
+      //   if (!this.graphSetting.layouter.autoLayout) {
+      //     console.log('当前布局不支持自动布局！')
+      //   } else {
+      //     console.log('自动布局功能入口...')
+      //     this.graphSetting.layouter.autoLayout(true)
+      //   }
+      // } else {
+      //   if (!this.graphSetting.layouter.stop) {
+      //     console.log('当前布局不支持自动布局stop！')
+      //   } else {
+      //     this.graphSetting.layouter.stop()
+      //   }
+      // }
     }
   },
 };
