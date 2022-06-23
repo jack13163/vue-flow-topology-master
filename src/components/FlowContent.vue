@@ -205,28 +205,6 @@ export default {
     // 滚轮滚动事件
     mousewheelHandler(e) {
       let event = window.event || e;
-      // console.log(event);
-      if (event.wheelDelta) {
-        //判断浏览器IE，谷歌滑轮事件
-        if (event.wheelDelta > 0) {
-          //当滑轮向上滚动时
-          this.setZoom("enlarge");
-        }
-        if (event.wheelDelta < 0) {
-          //当滑轮向下滚动时
-          this.setZoom("narrow");
-        }
-      } else if (event.detail) {
-        //Firefox滑轮事件
-        if (event.detail > 0) {
-          //当滑轮向下滚动时
-          this.setZoom("narrow");
-        }
-        if (event.detail < 0) {
-          //当滑轮向上滚动时
-          this.setZoom("enlarge");
-        }
-      }
       this.scalePosition = {
         x: event.layerX ? event.layerX : event.offsetX,
         y: event.layerY ? event.layerY : event.offsetY,
