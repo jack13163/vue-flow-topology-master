@@ -122,7 +122,7 @@ export default {
         this.$refs.operate.handleMiddleMenu(type);
       } else if (type === "auto-layout") {
         console.log("自动布局...")
-        this.toggleAutoLayout()
+        this.graphSetting.layouter.placeNodes(this.graphData.nodes)
       }
     },
     handleCloseJsonView() {
@@ -146,12 +146,8 @@ export default {
     // 自动布局相关逻辑
     init() {
       this.$nextTick(() => {
-        this.graphSetting.viewSize.width = this.$refs.flowContent.$el.getBoundingClientRect().width * 10
-        this.graphSetting.viewSize.height = this.$refs.flowContent.$el.getBoundingClientRect().height * 10
-        this.graphSetting.canvasZoom = 100
         Object.assign(this.graphData, this.$store.state.flowData)
         console.log('graphData:', this.graphData)
-        this.viewSizeIsInited = true
         if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
           var _defaultLayoutSetting = this.graphSetting.layouts[0]
           _defaultLayoutSetting.callback = (nodes) => {
@@ -238,11 +234,8 @@ export default {
           }
         }
       })
-    },
-    toggleAutoLayout() {
-      this.graphSetting.layouter.placeNodes(this.graphData.nodes)
     }
-  },
+  }
 };
 </script>
 
