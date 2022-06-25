@@ -241,21 +241,6 @@ export default {
     },
     toggleAutoLayout() {
       this.graphSetting.layouter.placeNodes(this.graphData.nodes)
-      // this.graphSetting.autoLayouting = !this.graphSetting.autoLayouting
-      // if (this.graphSetting.autoLayouting) {
-      //   if (!this.graphSetting.layouter.autoLayout) {
-      //     console.log('当前布局不支持自动布局！')
-      //   } else {
-      //     console.log('自动布局功能入口...')
-      //     this.graphSetting.layouter.autoLayout(true)
-      //   }
-      // } else {
-      //   if (!this.graphSetting.layouter.stop) {
-      //     console.log('当前布局不支持自动布局stop！')
-      //   } else {
-      //     this.graphSetting.layouter.stop()
-      //   }
-      // }
     }
   },
 };
