@@ -33,12 +33,8 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
       max_length: 1
     }
     SeeksGraphMath.analysisNodes4Didirectional(this.allNodes, [this.rootNode], 0, analyticResult, 0)
-    if (window.SeeksGraphDebug) console.log('调整画布大小')
-    var __mapWidth = this.graphSetting.viewSize.width
-    var __mapHeight = this.graphSetting.viewSize.height
-    rootNode.lot.x = parseInt((__mapWidth - rootNode.el.offsetWidth) / 2)
-    rootNode.lot.y = parseInt((__mapHeight - rootNode.el.offsetHeight) / 2)
-    if (window.SeeksGraphDebug) console.log('[layout canvasOffset]', this.graphSetting.viewSize, this.graphSetting.canvasSize)
+    rootNode.lot.x = rootNode.x;
+    rootNode.lot.y = rootNode.y;
     this.placeRelativePosition(this.rootNode)
     this.allNodes.forEach(thisNode => {
       if (thisNode.fixed === true) return
@@ -77,7 +73,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     if (forceLayout) {
       this.layoutTimes = 0
     }
-    if (this.layoutTimes > 300) {
+    if (this.layoutTimes > 50) {
       this.graphSetting.autoLayouting = false
       return
     }

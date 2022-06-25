@@ -320,6 +320,7 @@ export default {
   }
 };
 </script>
+
 <style scoped lang="scss">
 main {
   width: 100%;

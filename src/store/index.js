@@ -91,7 +91,6 @@ let storeData = {
       state.jspInit = data;
     },
     setFlowData(state, dataObj) {
-      // 特殊处理
       if (dataObj.hasOwnProperty('nodes')) {
         dataObj.nodes = storeData.mutations.cloneNodesData(dataObj.nodes);
       }
@@ -133,10 +132,8 @@ let storeData = {
       } else {
         state.flowData = { ...state.flowData, ...data };
       }
-
       sessionStorage.setItem("flowData", JSON.stringify(state.flowData));
       console.log(data.nodes[0].x + data.nodes[0].y);
-      // console.log(data.nodes[1].x + data.nodes[1].y);
     },
     setFlowMenuObj(state, data) {
       state.flowMenuObj = {
@@ -174,7 +171,7 @@ let storeData = {
       for (let node of nodes) {
         res.push({
           id: node.id,
-          name: node.name,
+          name: node.name ? node.name : node.text,
           type: node.type,
           text: node.text,
           x: node.x,

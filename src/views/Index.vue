@@ -164,9 +164,6 @@ export default {
           console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
         }
         this.loadGraphJsonData(this.graphData)
-        if (this.graphSetting.layouter) {
-          // this.graphSetting.layouter.placeNodes(this.graphData.nodes)
-        }
       })
     },
     loadGraphJsonData() {
@@ -179,7 +176,6 @@ export default {
       })
       this.flatNodeData(this.graphData.nodes, null, _nodes, _links, _map)
       this.graphData.nodes = this.loadNodes(_nodes)
-      // this.graphData.lines = this.loadLinks(_links)
       console.log('节点和连接信息预处理完毕')
     },
     loadNodes(_nodes) {
