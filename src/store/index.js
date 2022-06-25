@@ -89,6 +89,8 @@ let storeData = {
     },
     setJspInit(state, data) {
       state.jspInit = data;
+      state.stepIndex = 1;
+      state.flowStepData.push(deepClone(state.flowData))
     },
     setFlowData(state, dataObj) {
       if (dataObj.hasOwnProperty('nodes')) {
@@ -133,7 +135,7 @@ let storeData = {
         state.flowData = { ...state.flowData, ...data };
       }
       sessionStorage.setItem("flowData", JSON.stringify(state.flowData));
-      console.log(data.nodes[0].x + data.nodes[0].y);
+      console.log(data.nodes[0].x + ',' + data.nodes[0].y);
     },
     setFlowMenuObj(state, data) {
       state.flowMenuObj = {

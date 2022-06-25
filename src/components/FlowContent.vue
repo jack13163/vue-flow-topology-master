@@ -133,12 +133,10 @@ export default {
         this.$store.commit("setFlowData", { offsetX, offsetY });
       } else if (newVal.type === "reset") {
         // 重置
-        // let { offsetX, offsetY } = flowConfig;
-        // this.dragMove = {
-        //   top: offsetY,
-        //   left: offsetX,
-        // };
-        // this.$store.commit("setFlowData", flowConfig);
+        let flowStepData = this.$store.state.flowStepData;
+        this.$store.commit("setStepIndex", 0);
+        this.$store.commit("setFlowData", flowStepData[0]);
+        this.$refs.flowArea.initFlowCanvas();
       } else if (newVal.type === "autoLayout") {
         this.$emit("on-select-type", "auto-layout");
       } else if (newVal.type === "save") {
