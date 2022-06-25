@@ -92,14 +92,13 @@ export default {
             jsPConnect.setLabel({
               label: link.label,
               cssClass: "link-label",
-              // events: {
-              //   click: (labelOverlay, originalEvent) => {
-              //     console.log("点击了label");
-              //   },
-              // },
+              events: {
+                click: (labelOverlay, originalEvent) => {
+                  console.log("点击了label");
+                },
+              }
             });
           }
-          // this.initConnection(jsPConnect, link);
         });
       });
 
@@ -206,11 +205,11 @@ export default {
   beforeDestroy() {
     this.jspInit.deleteEveryEndpoint();
     this.jspInit.deleteEveryConnection();
-    // this.jspInit.unmakeEverySource();
-    // this.jspInit.unmakeEveryTarget();
-    // this.jspInit.unbind("click");
-    // this.jspInit.unbind("contextmenu");
-    // this.jspInit.unbind("connection");
+    this.jspInit.unmakeEverySource();
+    this.jspInit.unmakeEveryTarget();
+    this.jspInit.unbind("click");
+    this.jspInit.unbind("contextmenu");
+    this.jspInit.unbind("connection");
     this.jspInit = null;
   },
 };

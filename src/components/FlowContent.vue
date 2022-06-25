@@ -112,12 +112,6 @@ export default {
         this.setZoom("narrow");
       } else if (newVal.type === "import") {
         this.$refs.inputFile.click();
-        // inputFileDom.onchange = () => {
-        //   uploadFile(this.$refs.inputFile, (content) => {
-        //     this.$store.commit("setFlowData", JSON.parse(content));
-        //     this.handleCreateClick();
-        //   });
-        // };
       } else if (newVal.type === "export") {
         let flowData = this.$store.state.flowData;
         let blob = new Blob([JSON.stringify(flowData)], {

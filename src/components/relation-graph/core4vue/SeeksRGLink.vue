@@ -14,11 +14,7 @@
 </template>
 
 <script>
-// import SeeksRGStore from './SeeksRGStore'
 import SeeksGraphMath from './SeeksGraphMath'
-// import Velocity from 'velocity-animate'
-// import { mapState } from 'vuex'
-// var _parent = this.$parent
 const JUNCTION_POINT_STYLE = {
   border: 'border',
   ltrb: 'ltrb',
@@ -69,7 +65,6 @@ export default {
       }
     },
     getArrow(isHideArrow, arrow, color) {
-      // console.log('xxxxxxxxxxxx')
       if (isHideArrow) {
         return 'none'
       } else {
@@ -102,7 +97,6 @@ export default {
       var f_W = from.el.offsetWidth || from.width || from.w
       var f_H = from.el.offsetHeight || from.height || from.h
       if (isNaN(f_W) || isNaN(f_H)) {
-        // console.log('error from node size:', f_W, f_H)
         relationData.textPositon.x = 50
         relationData.textPositon.y = 50
         relationData.textPositon.rotate = 0
@@ -111,7 +105,6 @@ export default {
       var t_W = to.el.offsetWidth || to.width || to.w
       var t_H = to.el.offsetHeight || to.height || to.h
       if (isNaN(t_W) || isNaN(t_H)) {
-        // console.log('error to node size:', f_W, f_H)
         relationData.textPositon.x = 50
         relationData.textPositon.y = 50
         relationData.textPositon.rotate = 0
@@ -248,7 +241,6 @@ export default {
       this.graphSetting.checkedLineId = this.lineProps.seeks_id
       this.lineProps.fromNode.selected = true
       this.lineProps.toNode.selected = true
-      // Velocity(this.$refs.seeksRGLink, { strokDashoffset: 50 }, { duration: 3000, loop: 5 })
       setTimeout(function() {
         this.lineProps.fromNode.selected = false
         this.lineProps.toNode.selected = false
@@ -259,7 +251,6 @@ export default {
     },
     isAllowShowNode: function(thisNode) {
       const _r = thisNode.isShow !== false && thisNode.isHide !== true && (!thisNode.lot.parent || this.isAllowShowNode(thisNode.lot.parent, false) === true)
-      // if (derict !== false && _r === false) console.log('be hide node:', thisNode.text)
       return _r
     },
     flash() {

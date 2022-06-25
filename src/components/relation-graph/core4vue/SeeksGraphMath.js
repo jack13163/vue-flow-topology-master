@@ -74,7 +74,6 @@ var SeeksGraphMath = {
   },
   getRectHJoinPoint: function(x1, y1, x2, y2, n1w, n1h, n2w) {
     var _hH = n1h / 2
-    // var _hW = n1w / 2
     if ((x1 + n1w) < x2) {
       return { x: x1 + n1w + 5, y: y1 + _hH }
     } else if ((x1 + n1w) < (x2 + n2w)) {
@@ -85,7 +84,6 @@ var SeeksGraphMath = {
   },
   getRectVJoinPoint: function(x1, y1, x2, y2, n1w, n1h, n2w, n2h) {
     var _hW = n1w / 2
-    // var _hW = n1w / 2
     if ((y1 + n1h) < y2) {
       return { y: y1 + n1h + 5, x: x1 + _hW }
     } else if ((y1 + n1h) < (y2 + n2h)) {
@@ -276,9 +274,7 @@ var SeeksGraphMath = {
       willLayoutNodes.push(thisNode)
     })
     var __thisLevel_index = 0
-    // var __prev_node
     thisLevelNodes.forEach(thisNode => {
-      // console.log('Build node::', thisNode.name, thisNode.targetNodes.length)
       var __thisNode_child_size = 0
       if (thisNode.targetNodes) {
         let __thisTargetIndex = 0

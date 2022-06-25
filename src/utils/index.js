@@ -8,9 +8,7 @@ export const deepClone = source => {
 	for (let keys in source) {
 		// 遍历目标
 		if (source.hasOwnProperty(keys)) {
-			if (keys === 'parent') {
-				targetObj[keys] = null;
-			} else if (source[keys] && typeof source[keys] === "object") {
+			if (source[keys] && typeof source[keys] === "object") {
 				targetObj[keys] = deepClone(source[keys]);
 			} else {
 				targetObj[keys] = source[keys];
