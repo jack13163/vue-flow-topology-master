@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import SeeksRelationGraph from 'relation-graph'
+import SeeksRelationGraph from '../SeeksRelationGraph.vue'
 
   export default {
     name: 'SeeksRelationGraphDemo',
