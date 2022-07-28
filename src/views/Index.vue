@@ -96,7 +96,7 @@ export default {
     this.$store.commit("setJspInit", this.jspInstance);
   },
   mounted() {
-    this.init()
+    this.autoLayout()
   },
   methods: {
     onIsAddNode() {
@@ -135,7 +135,7 @@ export default {
       }
     },
     // 自动布局相关逻辑
-    init() {
+    autoLayout() {
       this.$nextTick(() => {
         Object.assign(this.graphData, this.$store.state.flowData)
         var _defaultLayoutSetting = {
