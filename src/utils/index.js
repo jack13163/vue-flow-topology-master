@@ -58,7 +58,6 @@ export const loadGraphJsonData = (graphData) => {
 	flatNodeData(graphData, null, _nodes, _links)
 	loadNodes(graphData, _nodes)
 	console.log('节点和连接信息预处理完毕')
-	return graphData;
 }
 
 const loadNodes = (graphData, _nodes) => {

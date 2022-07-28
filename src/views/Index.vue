@@ -65,20 +65,13 @@ export default {
       isJsonView: false,
       seeksNodeIdIndex: 1,
       jspInstance: null,
+      // 这里可以参考"Graph 图谱"中的参数进行设置
       graphSetting: {
         defaultNodeBorderWidth: 0,
         allowSwitchLineShape: true,
         allowSwitchJunctionPoint: true,
         defaultLineShape: 1,
-        'layouts': [
-          {
-            'label': '自动布局',
-            'layoutName': 'force',
-            'layoutClassName': 'seeks-layout-force'
-          }
-        ],
         defaultJunctionPoint: 'border',
-        // 这里可以参考"Graph 图谱"中的参数进行设置
         viewSize: {},
         canvasZoom: 100
       },
@@ -139,18 +132,17 @@ export default {
     init() {
       this.$nextTick(() => {
         Object.assign(this.graphData, this.$store.state.flowData)
-        console.log('graphData:', this.graphData)
-        if (this.graphSetting.layouts && this.graphSetting.layouts.length > 0) {
-          var _defaultLayoutSetting = this.graphSetting.layouts[0]
-          _defaultLayoutSetting.callback = (nodes) => {
+        var _defaultLayoutSetting = {
+          'label': '自动布局',
+          'layoutName': 'force',
+          'layoutClassName': 'seeks-layout-force',
+          'callback': (nodes) => {
             // 回调，更新
             this.$store.commit('setFlowData', { method: 'update-all-nodes', nodes: nodes});
             this.$refs.flowContent.updateCanvas();
           }
-          this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
-        } else {
-          console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
         }
+        this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
         loadGraphJsonData(this.graphData)
       })
     }
