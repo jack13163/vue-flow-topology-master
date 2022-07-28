@@ -3,20 +3,23 @@ const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
 export const getUUID = () => {
 	return (S4() + S4() + "-" + S4() + "-" + S4());
 }
+
+// 深拷贝解决使用JSON.stringify时遇到的循环引用问题
 export const deepClone = source => {
-	const targetObj = source.constructor === Array ? [] : {}; // 判断复制的目标是数组还是对象
-	for (let keys in source) {
-		// 遍历目标
-		if (source.hasOwnProperty(keys)) {
-			if (source[keys] && typeof source[keys] === "object") {
-				targetObj[keys] = deepClone(source[keys]);
-			} else {
-				targetObj[keys] = source[keys];
+	let cache = [];
+	let targetObj = JSON.stringify(source, function(key, value) {
+		if (typeof value === 'object' && value !== null) {
+			if (cache.indexOf(value) !== -1) {
+				return;
 			}
+			cache.push(value);
 		}
-	}
-	return targetObj;
+		return value;
+	});
+	cache = null;
+	return JSON.parse(targetObj);
 }
+
 export const uploadFile = (input, callBack) => {
 	//支持chrome IE10  
 	if (window.FileReader) {

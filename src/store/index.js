@@ -176,7 +176,8 @@ let storeData = {
           type: node.type,
           text: node.text,
           x: node.x,
-          y: node.y
+          y: node.y,
+          targetNodes: node.targetNodes
         })
       }
       return res;
