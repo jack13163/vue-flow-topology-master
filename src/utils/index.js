@@ -1,3 +1,4 @@
+import SeeksRGUtils from '@/components/relation-graph/core4vue/SeeksRGUtils'
 
 const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 export const getUUID = () => {
@@ -50,4 +51,83 @@ export const uploadFile = (input, callBack) => {
 		console.error('文件读取失败！')
 	}
 }
-export default { getUUID, uploadFile }
+
+export const loadGraphJsonData = (graphData) => {
+	var _nodes = []
+	var _links = []
+	let _map = []
+	graphData.nodes.forEach(node => {
+		_map[node.id] = node
+	})
+	flatNodeData(graphData, null, _nodes, _links, _map)
+	graphData.nodes = loadNodes(graphData, _nodes)
+	console.log('节点和连接信息预处理完毕')
+	return graphData;
+}
+
+const loadNodes = (graphData, _nodes) => {
+	let result = []
+	let seeksNodeIdIndex = 0;
+	_nodes.forEach(thisNodeJson => {
+		// 添加节点额外信息
+		let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
+		let __isNew = false
+		if (graphData.nodes_map[thisNode.id]) {
+			thisNode = graphData.nodes_map[thisNode.id]
+		} else {
+			__isNew = true
+		}
+		if (__isNew) {
+			thisNode.seeks_id = seeksNodeIdIndex++
+			thisNode.appended = false
+			graphData.nodes_map[thisNode.id] = thisNode
+			result.push(thisNode)
+		}
+	})
+	// 更新子节点信息
+	result.forEach(node => {
+		if (node.targetNodes && node.targetNodes.length > 0) {
+			let childs = []
+			node.targetNodes.forEach(child => {
+				childs.push(graphData.nodes_map[child.id])
+			})
+			node.targetNodes = childs
+		}
+	})
+	return result
+}
+
+const flatNodeData = (graphData, parentNode, nodes_collect, links_collect, _map) => {
+	let orign_nodes = graphData.nodes;
+	orign_nodes.forEach(thisOrignNode => {
+		if (!thisOrignNode.flated) {
+			thisOrignNode.flated = true
+			nodes_collect.push(thisOrignNode)
+			if (parentNode) {
+				links_collect.push({
+					from: parentNode.id,
+					to: thisOrignNode.id,
+				})
+			}
+			// 根据输入的数据进行预处理
+			var _childs = thisOrignNode.childs || thisOrignNode.children
+			if (!_childs) {
+				_childs = []
+				graphData.links.forEach(link => {
+					if (link.sourceId === thisOrignNode.id) {
+						let targetNode = _map[link.targetId]
+						_childs.push(targetNode)
+					}
+				})
+			}
+			if (_childs && _childs.length > 0) {
+				thisOrignNode.targetNodes = _childs
+				flatNodeData(graphData, thisOrignNode, nodes_collect, links_collect, _map)
+			} else {
+				thisOrignNode.targetNodes = []
+			}
+		}
+	})
+}
+
+export default { getUUID, uploadFile, loadGraphJsonData }

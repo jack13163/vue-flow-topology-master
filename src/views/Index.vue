@@ -50,7 +50,7 @@ import FlowMenu from "@/components/FlowMenu";
 import FlowAttr from "@/components/FlowAttr";
 import FlowContent from "@/components/FlowContent";
 import SeeksRGLayouters from "@/components/relation-graph/core4vue/SeeksRGLayouters"
-import SeeksRGUtils from '@/components/relation-graph/core4vue/SeeksRGUtils'
+import { loadGraphJsonData } from "@/utils";
 
 export default {
   name: "Index",
@@ -159,80 +159,7 @@ export default {
         } else {
           console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
         }
-        this.loadGraphJsonData(this.graphData)
-      })
-    },
-    loadGraphJsonData() {
-      // 兼容以前的配置
-      var _nodes = []
-      var _links = []
-      let _map = []
-      this.graphData.nodes.forEach(node => {
-        _map[node.id] = node
-      })
-      this.flatNodeData(this.graphData.nodes, null, _nodes, _links, _map)
-      this.graphData.nodes = this.loadNodes(_nodes)
-      console.log('节点和连接信息预处理完毕')
-    },
-    loadNodes(_nodes) {
-      let result = []
-      _nodes.forEach(thisNodeJson => {
-        // 添加节点额外信息
-        let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
-        let __isNew = false
-        if (this.graphData.nodes_map[thisNode.id]) {
-          thisNode = this.graphData.nodes_map[thisNode.id]
-        } else {
-          __isNew = true
-        }
-        if (__isNew) {
-          thisNode.seeks_id = this.seeksNodeIdIndex++
-          thisNode.appended = false
-          this.graphData.nodes_map[thisNode.id] = thisNode
-          result.push(thisNode)
-        }
-      })
-      // 更新子节点信息
-      result.forEach(node => {
-        if (node.targetNodes && node.targetNodes.length > 0) {
-          let childs = []
-          node.targetNodes.forEach(child => {
-            childs.push(this.graphData.nodes_map[child.id])
-          })
-          node.targetNodes = childs
-        }
-      })
-      return result
-    },
-    flatNodeData(orign_nodes, parentNode, nodes_collect, links_collect, _map) {
-      orign_nodes.forEach(thisOrignNode => {
-        if (!thisOrignNode.flated) {
-          thisOrignNode.flated = true
-          nodes_collect.push(thisOrignNode)
-          if (parentNode) {
-            links_collect.push({
-              from: parentNode.id,
-              to: thisOrignNode.id,
-            })
-          }
-          // 根据输入的数据进行预处理
-          var _childs = thisOrignNode.childs || thisOrignNode.children
-          if (!_childs) {
-            _childs = []
-            this.graphData.links.forEach(link => {
-              if (link.sourceId === thisOrignNode.id) {
-                let targetNode = _map[link.targetId]
-                _childs.push(targetNode)
-              }
-            })
-          }
-          if (_childs && _childs.length > 0) {
-            thisOrignNode.targetNodes = _childs
-            this.flatNodeData(_childs, thisOrignNode, nodes_collect, links_collect, _map)
-          } else {
-            thisOrignNode.targetNodes = []
-          }
-        }
+        this.graphData = loadGraphJsonData(this.graphData)
       })
     }
   }
