@@ -13,6 +13,7 @@
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "jsplumb": "^2.15.5",
+    "mavon-editor": "^2.10.4",
     "register-service-worker": "^1.7.1",
     "view-design": "^4.4.0",
     "vue": "^2.6.11",

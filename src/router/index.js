@@ -45,6 +45,16 @@ const routes = [
     path: '/graph/tree2',
     name: 'Demo4LayoutTree2',
     component: Demo4LayoutTree2
+  },
+  {
+    path: '/demo/layout-tree',
+    name: 'Demo4LayoutTree',
+    component: Demo4LayoutTree
+  },
+  {
+    path: '/demo/layout-tree2',
+    name: 'Demo4LayoutTree2',
+    component: Demo4LayoutTree2
   }
 ]
 

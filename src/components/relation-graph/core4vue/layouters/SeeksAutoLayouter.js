@@ -18,6 +18,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     this.__origin_nodes = allNodes
     this.rootNode = rootNode
     allNodes.forEach(thisNode => {
+      thisNode.lot = {}
       thisNode.lot.eached = false
       thisNode.lot.notLeafNode = false
       thisNode.lot.childs = []
