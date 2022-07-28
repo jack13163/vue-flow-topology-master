@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="index"
-    id="zll-index"
+  <div class="index" id="zll-index"
     @mousemove.prevent="handleMousemove"
     @mouseup.prevent="handleMouseup"
   >
@@ -84,13 +82,7 @@ export default {
         viewSize: {},
         canvasZoom: 100
       },
-      graphData: {
-        nodes: [],
-        lines: [],
-        rootNode: null,
-        nodes_map: {},
-        lines_map: {}
-      }
+      graphData: {}
     };
   },
   computed: {
@@ -159,7 +151,7 @@ export default {
         } else {
           console.log('你需要设置layouts来指定当前图谱可以使用的布局器！')
         }
-        this.graphData = loadGraphJsonData(this.graphData)
+        loadGraphJsonData(this.graphData)
       })
     }
   }
