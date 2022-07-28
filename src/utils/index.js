@@ -59,7 +59,7 @@ export const loadGraphJsonData = (graphData) => {
 }
 
 const appendNodeInfo = (graphData) => {
-	let _nodes = deepClone(graphData.nodes);
+	let _nodes = graphData.nodes;
 	let result = []
 	let seeksNodeIdIndex = 0;
 	if (!graphData.nodes_map) {

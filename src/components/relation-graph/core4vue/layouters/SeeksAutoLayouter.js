@@ -9,6 +9,9 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
   this.refresh = function() {
     this.placeNodes(this.__origin_nodes, this.rootNode)
   }
+  if (!layoutSetting.maxLayoutTimes) {
+    layoutSetting.maxLayoutTimes = 50;
+  }
   this.placeNodes = function(allNodes, rootNode) {
     if (!allNodes ||  allNodes.length === 0) return;
     console.log('layout by root:', rootNode)
@@ -70,7 +73,7 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
     if (forceLayout) {
       this.layoutTimes = 0
     }
-    if (this.layoutTimes > 50) {
+    if (this.layoutTimes > layoutSetting.maxLayoutTimes) {
       this.graphSetting.autoLayouting = false
       return
     }

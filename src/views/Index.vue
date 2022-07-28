@@ -141,6 +141,7 @@ export default {
         var _defaultLayoutSetting = {
           // 布局类型：center,circle,force,fixed,tree
           'layoutName': 'force',
+          'maxLayoutTimes': '10',
           'callback': (nodes) => {
             // 回调，更新
             this.$store.commit('setFlowData', { method: 'update-all-nodes', nodes: nodes});
