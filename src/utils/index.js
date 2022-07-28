@@ -53,14 +53,13 @@ export const uploadFile = (input, callBack) => {
 }
 
 export const loadGraphJsonData = (graphData) => {
-	var _nodes = []
-	var _links = []
-	flatNodeData(graphData, null, _nodes, _links)
-	loadNodes(graphData, _nodes)
+	flatNodeData(graphData, null, [], [])
+	appendNodeInfo(graphData)
 	console.log('节点和连接信息预处理完毕')
 }
 
-const loadNodes = (graphData, _nodes) => {
+const appendNodeInfo = (graphData) => {
+	let _nodes = deepClone(graphData.nodes);
 	let result = []
 	let seeksNodeIdIndex = 0;
 	if (!graphData.nodes_map) {
@@ -92,7 +91,7 @@ const loadNodes = (graphData, _nodes) => {
 			node.targetNodes = childs
 		}
 	})
-	return result
+	graphData.nodes = result;
 }
 
 const flatNodeData = (graphData, parentNode, nodes_collect, links_collect) => {
