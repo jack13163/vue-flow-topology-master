@@ -150,6 +150,16 @@ export default {
         }
         this.graphSetting.layouter = SeeksRGLayouters.createLayout(_defaultLayoutSetting, this.graphSetting)
         loadGraphJsonData(this.graphData)
+        // 绑定CTRL+M组合键事件
+        let vm = this;
+        document.onkeydown = function (e) {
+          if (!e) return;
+          if (e.ctrlKey === true) {
+            if (e.keyCode === 77) {
+              vm.onSelectType("auto-layout");
+            }
+          }
+        }
       })
     }
   }
