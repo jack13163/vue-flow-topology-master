@@ -100,6 +100,7 @@ const flatNodeData = (graphData, parentNode, nodes_collect, links_collect) => {
 	if (!graphData._map) {
 		graphData._map = {}
 		graphData.nodes.forEach(node => {
+			node.lot = {}
 			graphData._map[node.id] = node
 		})
 	}

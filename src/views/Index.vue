@@ -107,7 +107,13 @@ export default {
         this.$refs.operate.handleMiddleMenu(type);
       } else if (type === "auto-layout") {
         console.log("自动布局...")
-        this.graphSetting.layouter.placeNodes(this.graphData.nodes)
+        let allNodes = this.graphData.nodes;
+        let rootNode = null;
+        if (!allNodes ||  allNodes.length === 0) return;
+        if (!rootNode) {
+          rootNode = allNodes[0];
+        }
+        this.graphSetting.layouter.placeNodes(allNodes, rootNode);
       }
     },
     handleCloseJsonView() {
@@ -133,9 +139,8 @@ export default {
       this.$nextTick(() => {
         Object.assign(this.graphData, this.$store.state.flowData)
         var _defaultLayoutSetting = {
-          'label': '自动布局',
+          // 布局类型：center,circle,force,fixed,tree
           'layoutName': 'force',
-          'layoutClassName': 'seeks-layout-force',
           'callback': (nodes) => {
             // 回调，更新
             this.$store.commit('setFlowData', { method: 'update-all-nodes', nodes: nodes});

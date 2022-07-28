@@ -11,14 +11,10 @@ function SeeksAutoLayouter(layoutSetting, graphSetting) {
   }
   this.placeNodes = function(allNodes, rootNode) {
     if (!allNodes ||  allNodes.length === 0) return;
-    if (!rootNode) {
-      rootNode = allNodes[0]
-    }
     console.log('layout by root:', rootNode)
     this.__origin_nodes = allNodes
     this.rootNode = rootNode
     allNodes.forEach(thisNode => {
-      thisNode.lot = {}
       thisNode.lot.eached = false
       thisNode.lot.notLeafNode = false
       thisNode.lot.childs = []
