@@ -55,12 +55,8 @@ export const uploadFile = (input, callBack) => {
 export const loadGraphJsonData = (graphData) => {
 	var _nodes = []
 	var _links = []
-	let _map = []
-	graphData.nodes.forEach(node => {
-		_map[node.id] = node
-	})
-	flatNodeData(graphData, null, _nodes, _links, _map)
-	graphData.nodes = loadNodes(graphData, _nodes)
+	flatNodeData(graphData, null, _nodes, _links)
+	loadNodes(graphData, _nodes)
 	console.log('节点和连接信息预处理完毕')
 	return graphData;
 }
@@ -68,6 +64,9 @@ export const loadGraphJsonData = (graphData) => {
 const loadNodes = (graphData, _nodes) => {
 	let result = []
 	let seeksNodeIdIndex = 0;
+	if (!graphData.nodes_map) {
+		graphData.nodes_map = {}
+	}
 	_nodes.forEach(thisNodeJson => {
 		// 添加节点额外信息
 		let thisNode = SeeksRGUtils.json2Node(thisNodeJson)
@@ -97,8 +96,14 @@ const loadNodes = (graphData, _nodes) => {
 	return result
 }
 
-const flatNodeData = (graphData, parentNode, nodes_collect, links_collect, _map) => {
+const flatNodeData = (graphData, parentNode, nodes_collect, links_collect) => {
 	let orign_nodes = graphData.nodes;
+	if (!graphData._map) {
+		graphData._map = {}
+		graphData.nodes.forEach(node => {
+			graphData._map[node.id] = node
+		})
+	}
 	orign_nodes.forEach(thisOrignNode => {
 		if (!thisOrignNode.flated) {
 			thisOrignNode.flated = true
@@ -115,14 +120,14 @@ const flatNodeData = (graphData, parentNode, nodes_collect, links_collect, _map)
 				_childs = []
 				graphData.links.forEach(link => {
 					if (link.sourceId === thisOrignNode.id) {
-						let targetNode = _map[link.targetId]
+						let targetNode = graphData._map[link.targetId]
 						_childs.push(targetNode)
 					}
 				})
 			}
 			if (_childs && _childs.length > 0) {
 				thisOrignNode.targetNodes = _childs
-				flatNodeData(graphData, thisOrignNode, nodes_collect, links_collect, _map)
+				flatNodeData(graphData, thisOrignNode, nodes_collect, links_collect)
 			} else {
 				thisOrignNode.targetNodes = []
 			}
