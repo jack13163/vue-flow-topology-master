@@ -140,7 +140,7 @@ export default {
         Object.assign(this.graphData, this.$store.state.flowData)
         var _defaultLayoutSetting = {
           // 布局类型：center,circle,force,fixed,tree
-          'layoutName': 'force',
+          'layoutName': 'tree',
           'maxLayoutTimes': '10',
           'callback': (nodes) => {
             // 回调，更新

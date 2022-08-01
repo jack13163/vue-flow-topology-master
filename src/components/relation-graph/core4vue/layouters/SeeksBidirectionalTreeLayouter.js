@@ -144,37 +144,15 @@ function SeeksBidirectionalTreeLayouter(layoutSetting, graphSetting) {
     var __mapHeight = this.graphSetting.viewSize.height
     var __offsetX = rootNode.offset_x || 0
     var __offsetY = rootNode.offset_y || 0
-    if (rootNode.fixed !== true) {
-      var _center_offset_x = parseInt(this.config.centerOffset_x) || 0
-      var _center_offset_y = parseInt(this.config.centerOffset_y) || 0
-      if (this.config.from === 'top') {
-        rootNode.lot.x = (__mapWidth - rootNode.el.offsetWidth) / 2 + _center_offset_x
-        rootNode.lot.y = parseInt(__mapHeight * 0.3 - rootNode.el.offsetHeight) + _center_offset_y
-      } else if (this.config.from === 'bottom') {
-        rootNode.lot.x = (__mapWidth - rootNode.el.offsetWidth) / 2 + _center_offset_x
-        rootNode.lot.y = parseInt(__mapHeight * 0.7 - rootNode.el.offsetHeight) + _center_offset_y
-      } else if (this.config.from === 'right') {
-        rootNode.lot.x = parseInt(__mapWidth * 0.7 - rootNode.el.offsetWidth) / 2 + _center_offset_x
-        rootNode.lot.y = parseInt(__mapHeight / 2 - rootNode.el.offsetHeight / 2) + _center_offset_y
-      } else {
-        rootNode.lot.x = parseInt(__mapWidth * 0.3 - rootNode.el.offsetWidth) / 2 + _center_offset_x
-        rootNode.lot.y = parseInt(__mapHeight / 2 - rootNode.el.offsetHeight / 2) + _center_offset_y
-      }
-      console.log('设置根节点位置:', rootNode.text, rootNode.x, rootNode.y, this.graphSetting.canvasSize.width, this.graphSetting.canvasSize.height, this.graphSetting.canvasOffset.x, this.graphSetting.canvasOffset.y)
-      rootNode.x = rootNode.lot.x + __offsetX
-      rootNode.y = rootNode.lot.y + __offsetY
-    } else {
-      console.log('固定位置的rootNode:', rootNode.text, rootNode.x, rootNode.y)
-      if (rootNode.origin_x === undefined) {
-        rootNode.origin_x = rootNode.x
-        rootNode.origin_y = rootNode.y
-      }
-      rootNode.lot.x = rootNode.origin_x
-      rootNode.lot.y = rootNode.origin_y
-      rootNode.x = rootNode.lot.x + __offsetX
-      rootNode.y = rootNode.lot.y + __offsetY
-      console.log('固定位置的rootNode:', rootNode.text, rootNode.x, rootNode.y)
+    console.log('固定位置的rootNode:', rootNode.text, rootNode.x, rootNode.y)
+    if (rootNode.origin_x === undefined) {
+      rootNode.origin_x = rootNode.x
+      rootNode.origin_y = rootNode.y
     }
+    rootNode.lot.x = rootNode.origin_x
+    rootNode.lot.y = rootNode.origin_y
+    rootNode.x = rootNode.lot.x + __offsetX
+    rootNode.y = rootNode.lot.y + __offsetY
     rootNode.lot.placed = true
     var dynamicSizeConfig = {
       __mapWidth,

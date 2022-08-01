@@ -25,6 +25,7 @@ import Demo4SceneGroup from '../components/relation-graph/demo/Demo4SceneGroup.v
 import Demo4SceneNetwork from '../components/relation-graph/demo/Demo4SceneNetwork.vue'
 import Demo4SceneOrg from '../components/relation-graph/demo/Demo4SceneOrg.vue'
 import Demo4SceneRelationship from '../components/relation-graph/demo/Demo4SceneRelationship.vue'
+import Demo4TreeDistance from '../components/relation-graph/demo/Demo4TreeDistance.vue'
 
 Vue.use(VueRouter)
 
@@ -158,6 +159,11 @@ const routes = [
     path: '/demo/scene/relationship',
     name: 'Demo4SceneRelationship',
     component: Demo4SceneRelationship
+  },
+  {
+    path: '/demo/tree/distance',
+    name: 'Demo4TreeDistance',
+    component: Demo4TreeDistance
   }
 ]
 
